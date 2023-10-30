@@ -30,7 +30,8 @@
         app:iconGravity="textStart"
         app:iconPadding="@dimen/icon_padding"
         app:cornerRadius="@dimen/button_corner_radius"
-        android:backgroundTint="@color/white"></Button>
+        android:backgroundTint="@color/white"
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/media_button"
@@ -45,7 +46,8 @@
         app:iconGravity="textStart"
         app:iconPadding="@dimen/icon_padding"
         app:cornerRadius="@dimen/button_corner_radius"
-        android:backgroundTint="@color/white"></Button>
+        android:backgroundTint="@color/white"
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/settings_button"
@@ -60,5 +62,6 @@
         app:iconGravity="textStart"
         app:iconPadding="@dimen/icon_padding"
         app:cornerRadius="@dimen/button_corner_radius"
-        android:backgroundTint="@color/white"></Button>
+        android:backgroundTint="@color/white"
+        android:textAllCaps="false"/>
 </LinearLayout>
