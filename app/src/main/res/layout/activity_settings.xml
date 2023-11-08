@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    style="@style/SettingsBackground">
+    style="@style/SettingsAndSearchBackground">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,6 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <Switch
+                    android:id="@+id/theme_switch"
                     android:layout_width="56dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center" />
@@ -58,6 +59,7 @@
                 android:text="@string/share_app"
                 style="@style/SettingsText" />
             <ImageView
+                android:id="@+id/share_app_button"
                 android:src="@drawable/share_icon"
                 style="@style/SettingsImages" />
         </LinearLayout>
@@ -68,6 +70,7 @@
                 android:text="@string/contact_support"
                 style="@style/SettingsText" />
             <ImageView
+                android:id="@+id/support_button"
                 android:src="@drawable/support_icon"
                 style="@style/SettingsImages" />
         </LinearLayout>
@@ -78,6 +81,7 @@
                 android:text="@string/user_agreement"
                 style="@style/SettingsText" />
             <ImageView
+                android:id="@+id/user_agreement_button"
                 android:src="@drawable/arrow_forward_icon"
                 style="@style/SettingsImages" />
         </LinearLayout>
