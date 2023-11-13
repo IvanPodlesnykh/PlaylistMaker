@@ -21,7 +21,10 @@ class SettingsActivity : AppCompatActivity() {
 
         val shareButton = findViewById<ImageView>(R.id.share_app_button)
         shareButton.setOnClickListener{
-
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.practicum_link))
+            intent.type = "text/plain"
+            startActivity(intent)
         }
 
         val supportButton = findViewById<ImageView>(R.id.support_button)

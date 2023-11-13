@@ -61,7 +61,7 @@
             <ImageView
                 android:id="@+id/share_app_button"
                 android:src="@drawable/share_icon"
-                style="@style/SettingsImages" />
+                style="@style/SettingsButton" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,7 +72,7 @@
             <ImageView
                 android:id="@+id/support_button"
                 android:src="@drawable/support_icon"
-                style="@style/SettingsImages" />
+                style="@style/SettingsButton" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -83,7 +83,7 @@
             <ImageView
                 android:id="@+id/user_agreement_button"
                 android:src="@drawable/arrow_forward_icon"
-                style="@style/SettingsImages" />
+                style="@style/SettingsButton" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

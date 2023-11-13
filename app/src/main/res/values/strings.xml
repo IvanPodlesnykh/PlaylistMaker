@@ -11,4 +11,5 @@
     <string name="mail_to_dev_topic">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="mail_to_dev_text">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="search">Поиск</string>
+    <string name="practicum_link">https://practicum.yandex.ru/profile/android-developer/</string>
 </resources>

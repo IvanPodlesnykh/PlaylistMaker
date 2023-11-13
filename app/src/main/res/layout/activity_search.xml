@@ -54,9 +54,9 @@
             android:id="@+id/clear_search_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/cross"
             android:layout_gravity="center|right"
-            android:paddingRight="@dimen/icon_padding" />
+            android:paddingRight="12dp"
+            style="@style/SearchBarCloseButton"/>
     </FrameLayout>
 
 </LinearLayout>
