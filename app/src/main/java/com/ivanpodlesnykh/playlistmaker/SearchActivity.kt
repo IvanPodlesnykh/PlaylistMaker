@@ -16,20 +16,36 @@ class SearchActivity : AppCompatActivity() {
 
     private var searchString: String = SEARCH_STRING_DEF
 
-    companion object {
-        const val SEARCH_STRING_KEY = "SEARCH_INPUT"
-        const val SEARCH_STRING_DEF = ""
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        handleBackButton()
+
+        handleTextInput()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(SEARCH_STRING_KEY, searchString)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        if(savedInstanceState != null) {
+            val textInput = findViewById<EditText>(R.id.search_bar)
+            textInput.setText(savedInstanceState.getString(SEARCH_STRING_KEY, SEARCH_STRING_DEF))
+        }
+    }
+
+    private fun handleBackButton() {
         val backButton = findViewById<ImageView>(R.id.search_back_button)
         backButton.setOnClickListener{
             this.finish()
         }
+    }
 
+    private fun handleTextInput() {
         val textInput = findViewById<EditText>(R.id.search_bar)
 
         val clearButton = findViewById<ImageView>(R.id.clear_search_button)
@@ -63,16 +79,8 @@ class SearchActivity : AppCompatActivity() {
         textInput.addTextChangedListener(textWatcher)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_STRING_KEY, searchString)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        if(savedInstanceState != null) {
-            val textInput = findViewById<EditText>(R.id.search_bar)
-            textInput.setText(savedInstanceState.getString(SEARCH_STRING_KEY, SEARCH_STRING_DEF))
-        }
+    companion object {
+        private const val SEARCH_STRING_KEY = "SEARCH_INPUT"
+        private const val SEARCH_STRING_DEF = ""
     }
 }
