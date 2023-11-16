@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MainScreenButtons" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="iconTint">@color/black</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/icon_padding</item>
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+    <style name="MainScreenBackground">
+        <item name="android:background">@color/blue</item>
+    </style>
+    <style name="SettingsText">
+        <item name="android:layout_width">@dimen/settings_layout_width</item>
+        <item name="android:layout_height">@dimen/settings_layout_height</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+    <style name="SettingsButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="tint">@color/grey</item>
+        <item name="android:paddingRight">@dimen/button_padding</item>
+        <item name="android:layout_gravity">center_vertical|right</item>
+    </style>
+    <style name="SettingsAndSearchBackground">
+        <item name="android:background">@color/white</item>
+    </style>
+    <style name="SettingsTopPanel">
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="SearchBar">
+        <item name="android:drawableTint">@color/grey</item>
+        <item name="android:textColorHint">@color/grey</item>
+    </style>
+    <style name="SearchBarCloseButton">
+        <item name="android:fillColor">@color/grey</item>
+        <item name="android:src">@drawable/close_icon_day</item>
+    </style>
+</resources>
