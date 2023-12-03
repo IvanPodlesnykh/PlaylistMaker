@@ -6,11 +6,22 @@
     <dimen name="button_corner_radius">16dp</dimen>
     <dimen name="text_size">22sp</dimen>
     <dimen name="medium_text_size">16sp</dimen>
+
     <dimen name="settings_layout_height">61dp</dimen>
     <dimen name="settings_layout_padding">16dp</dimen>
     <dimen name="settings_layout_width">300dp</dimen>
+
     <dimen name="back_button_size">48dp</dimen>
     <dimen name="button_padding">12dp</dimen>
+
     <dimen name="artist_name_width">54dp</dimen>
     <dimen name="track_cover_corner_radius">2dp</dimen>
+    <dimen name="track_cover_size">45dp</dimen>
+    <dimen name="track_item_height">61dp</dimen>
+    <dimen name="track_item_margin_left">13dp</dimen>
+    <dimen name="track_info_margin_between">8dp</dimen>
+    <dimen name="track_info_margin_right">19dp</dimen>
+    <dimen name="track_name_width">250dp</dimen>
+    <dimen name="track_name_height">19dp</dimen>
+    <dimen name="track_small_text_size">11sp</dimen>
 </resources>
