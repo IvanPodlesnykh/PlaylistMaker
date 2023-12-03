@@ -49,4 +49,31 @@
         <item name="android:fillColor">@color/grey</item>
         <item name="android:src">@drawable/close_icon_day</item>
     </style>
+    <style name="TrackName">
+        <item name="android:textColor">@color/black</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:ellipsize">end</item>
+        <item name="maxWidth">250dp</item>
+        <item name="maxLines">1</item>
+    </style>
+    <style name="ArtistName">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxWidth">@dimen/artist_name_width</item>
+        <item name="android:maxLines">1</item>
+    </style>
+    <style name="TrackTime">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+    <style name="TrackItemDot">
+        <item name="android:src">@drawable/dot_light</item>
+    </style>
+    <style name="TrackItemArrow">
+        <item name="android:src">@drawable/forward_arrow_light</item>
+    </style>
 </resources>
