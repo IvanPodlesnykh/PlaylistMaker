@@ -1,57 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/track_item_height"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/track_item_padding_bottom">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
         android:id="@+id/track_cover"
         android:layout_width="@dimen/track_cover_size"
         android:layout_height="@dimen/track_cover_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="@dimen/track_item_margin_left"
-        android:layout_gravity="center_vertical" />
-    <LinearLayout
+        android:layout_marginTop="@dimen/track_cover_margin_top"/>
+    <TextView
+        android:id="@+id/track_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/track_cover"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/forward_arrow"
+        android:layout_marginStart="@dimen/track_info_margin_between"
+        android:layout_marginTop="@dimen/track_name_margin_top"
+        style="@style/TrackName"/>
+
+    <TextView
+        android:id="@+id/artist_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/track_cover"
+        app:layout_constraintTop_toBottomOf="@+id/track_name"
+        android:layout_marginStart="@dimen/track_info_margin_between"
+        android:layout_marginTop="@dimen/track_info_margin_top"
+        app:layout_constraintWidth_max="wrap"
+        app:layout_constraintWidth_percent="@dimen/artist_name_percentage"
+        style="@style/ArtistName"/>
+    <ImageView
+        android:id="@+id/dot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/track_info_margin_between"
-        android:orientation="vertical"
-        android:layout_gravity="center_vertical">
-        <TextView
-            android:id="@+id/song_name"
-            android:layout_width="@dimen/track_name_width"
-            android:layout_height="@dimen/track_name_height"
-            style="@style/TrackName" />
-        <LinearLayout
-            android:layout_width="250dp"
-            android:layout_height="13dp">
-            <TextView
-                android:id="@+id/artist_name"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                style="@style/ArtistName" />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TrackItemDot" />
-            <TextView
-                android:id="@+id/track_time"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                style="@style/TrackTime" />
-        </LinearLayout>
-    </LinearLayout>
-    <FrameLayout
-        android:layout_width="match_parent"
+        app:layout_constraintStart_toEndOf="@+id/artist_name"
+        app:layout_constraintTop_toBottomOf="@+id/track_name"
+        android:layout_marginTop="@dimen/track_info_margin_top"
+        style="@style/TrackItemDot"/>
+    <TextView
+        android:id="@+id/track_time"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/TrackItemArrow"
-            android:layout_marginLeft="@dimen/track_info_margin_between"
-            android:layout_marginRight="@dimen/track_info_margin_right"
-            android:layout_gravity="right|center_vertical" />
-    </FrameLayout>
+        app:layout_constraintStart_toEndOf="@+id/dot"
+        app:layout_constraintTop_toBottomOf="@+id/track_name"
+        android:layout_marginTop="@dimen/track_info_margin_top"
+        style="@style/TrackTime"/>
 
+    <ImageView
+        android:id="@+id/forward_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="@dimen/track_right_arrow_right_margin"
+        android:layout_marginTop="@dimen/track_right_arrow_top_margin"
+        style="@style/TrackItemArrow"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

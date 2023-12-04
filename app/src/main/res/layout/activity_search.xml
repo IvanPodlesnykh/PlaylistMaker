@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:paddingStart="12dp"
+            android:paddingStart="@dimen/search_padding"
             android:text="@string/search"
             android:textSize="@dimen/text_size"
             style="@style/SettingsTopPanel"
@@ -32,9 +32,9 @@
     </LinearLayout>
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp">
+        android:layout_height="@dimen/search_bar_height"
+        android:paddingHorizontal="@dimen/search_bar_horizontal_padding"
+        android:paddingVertical="@dimen/search_bar_vertical_padding">
         <EditText
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
@@ -48,21 +48,21 @@
             android:hint="@string/search"
             android:inputType="text"
             android:lines="1"
-            android:paddingLeft="12dp"
+            android:paddingLeft="@dimen/search_padding"
             android:textSize="@dimen/medium_text_size"/>
         <ImageView
             android:id="@+id/clear_search_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|right"
-            android:paddingRight="12dp"
+            android:paddingRight="@dimen/search_padding"
             style="@style/SearchBarCloseButton"/>
     </FrameLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_of_tracks"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="16dp"
+        android:paddingTop="@dimen/track_list_top_padding"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 </LinearLayout>

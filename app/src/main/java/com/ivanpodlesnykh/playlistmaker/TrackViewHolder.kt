@@ -10,13 +10,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class TrackViewHolder(itemView: View) : ViewHolder(itemView) {
-
+    val songName = itemView.findViewById<TextView>(R.id.track_name)
+    val artistName = itemView.findViewById<TextView>(R.id.artist_name)
+    val trackTime = itemView.findViewById<TextView>(R.id.track_time)
+    val trackCover = itemView.findViewById<ImageView>(R.id.track_cover)
     fun bind(track: Track) {
-        val songName = itemView.findViewById<TextView>(R.id.song_name)
-        val artistName = itemView.findViewById<TextView>(R.id.artist_name)
-        val trackTime = itemView.findViewById<TextView>(R.id.track_time)
-        val trackCover = itemView.findViewById<ImageView>(R.id.track_cover)
-
         songName.text = track.trackName
         artistName.text = track.artistName
         trackTime.text = track.trackTime
