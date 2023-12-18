@@ -6,9 +6,29 @@
     <dimen name="button_corner_radius">16dp</dimen>
     <dimen name="text_size">22sp</dimen>
     <dimen name="medium_text_size">16sp</dimen>
+
     <dimen name="settings_layout_height">61dp</dimen>
     <dimen name="settings_layout_padding">16dp</dimen>
     <dimen name="settings_layout_width">300dp</dimen>
+
     <dimen name="back_button_size">48dp</dimen>
     <dimen name="button_padding">12dp</dimen>
+    <dimen name="search_padding">12dp</dimen>
+    <dimen name="search_bar_height">52dp</dimen>
+    <dimen name="search_bar_horizontal_padding">16dp</dimen>
+    <dimen name="search_bar_vertical_padding">8dp</dimen>
+
+    <dimen name="track_list_top_padding">16dp</dimen>
+    <dimen name="track_item_padding_bottom">8dp</dimen>
+    <dimen name="track_cover_corner_radius">2dp</dimen>
+    <dimen name="track_cover_size">45dp</dimen>
+    <dimen name="track_cover_margin_top">8dp</dimen>
+    <dimen name="track_name_margin_top">14dp</dimen>
+    <dimen name="track_item_margin_left">13dp</dimen>
+    <dimen name="track_info_margin_between">8dp</dimen>
+    <dimen name="track_info_margin_top">1dp</dimen>
+    <dimen name="artist_name_percentage">0.6</dimen>
+    <dimen name="track_small_text_size">11sp</dimen>
+    <dimen name="track_right_arrow_top_margin">18dp</dimen>
+    <dimen name="track_right_arrow_right_margin">12dp</dimen>
 </resources>
