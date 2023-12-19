@@ -1,31 +1,64 @@
 package com.ivanpodlesnykh.playlistmaker
 
 import android.content.Context
+import android.media.Image
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.Toast
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 class SearchActivity : AppCompatActivity() {
 
+    private lateinit var errorView: ViewGroup
+
+    private lateinit var errorIcon: ImageView
+
+    private lateinit var errorText: TextView
+
+    private lateinit var reloadButton: Button
+
     private var searchString: String = SEARCH_STRING_DEF
+
+    private val baseUrl = "https://itunes.apple.com"
+
+    private val retrofit = Retrofit
+        .Builder()
+        .baseUrl(baseUrl)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+    private val MusicService = retrofit.create(MusicApi::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        errorIcon = findViewById(R.id.errorIcon)
+        errorView = findViewById(R.id.errorView)
+        errorText = findViewById(R.id.errorText)
+        reloadButton = findViewById(R.id.reloadButton)
+
+        handleErrors(ErrorType.HIDE_ERROR)
+
         handleBackButton()
 
         handleTextInput()
-
-        handleTrackList()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -41,6 +74,58 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    private fun handleErrors(errorType: ErrorType) {
+        when(errorType) {
+            ErrorType.NO_CONNECTION -> {
+                errorView.visibility = View.VISIBLE
+                errorText.visibility = View.VISIBLE
+                reloadButton.visibility = View.VISIBLE
+                errorIcon.setBackgroundResource(R.drawable.no_connection)
+                errorText.setText(resources.getString(R.string.error_message))
+            }
+            ErrorType.NOT_FOUND -> {
+                errorView.visibility = View.VISIBLE
+                errorText.visibility = View.VISIBLE
+                errorIcon.setBackgroundResource(R.drawable.not_found)
+                errorText.setText(resources.getString(R.string.not_found_message))
+                reloadButton.visibility = View.GONE
+            }
+            ErrorType.HIDE_ERROR -> {
+                errorView.visibility = View.GONE
+                errorText.visibility = View.GONE
+                reloadButton.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun handleReloadButton(text: String) {
+        reloadButton.setOnClickListener {
+            MusicService.search(text)
+                .enqueue(object : Callback<SearchResponse> {
+                    override fun onResponse(
+                        call: Call<SearchResponse>,
+                        response: Response<SearchResponse>
+                    ) {
+                        if (response.body()?.results!!.isEmpty()) handleErrors(ErrorType.NOT_FOUND)
+                        else {
+                            when(response.code()){
+                                200 -> {
+                                    handleTrackList(response.body()?.results!!)
+                                    handleErrors(ErrorType.HIDE_ERROR)
+                                }
+                                else -> {
+                                    handleErrors(ErrorType.NO_CONNECTION)
+                                }
+                            }
+                        }
+                    }
+                    override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+                        handleErrors(ErrorType.NO_CONNECTION)
+                    }
+                })
+        }
+    }
+
     private fun handleBackButton() {
         val backButton = findViewById<ImageView>(R.id.search_back_button)
         backButton.setOnClickListener{
@@ -49,16 +134,21 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun handleTextInput() {
+
+        handleErrors(ErrorType.HIDE_ERROR)
+
         val textInput = findViewById<EditText>(R.id.search_bar)
 
         val clearButton = findViewById<ImageView>(R.id.clear_search_button)
         clearButton.visibility = View.GONE
 
-        clearButton.setOnClickListener{
+        clearButton.setOnClickListener {
             textInput.setText("")
             val view = currentFocus
             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(view?.windowToken, 0)
+            handleTrackList(arrayListOf())
+            handleErrors(ErrorType.HIDE_ERROR)
         }
 
         val textWatcher = object: TextWatcher {
@@ -80,34 +170,51 @@ class SearchActivity : AppCompatActivity() {
 
         }
         textInput.addTextChangedListener(textWatcher)
+
+        textInput.setOnEditorActionListener { _, actionId, _ ->
+            handleErrors(ErrorType.HIDE_ERROR)
+            handleTrackList(arrayListOf())
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                MusicService.search(textInput.text.toString())
+                    .enqueue(object : Callback<SearchResponse> {
+                        override fun onResponse(
+                            call: Call<SearchResponse>,
+                            response: Response<SearchResponse>
+                        ) {
+                            if (response.body()?.results!!.isEmpty()) handleErrors(ErrorType.NOT_FOUND)
+                            else {
+                                when(response.code()){
+                                    200 -> {
+                                        handleTrackList(response.body()?.results!!)
+                                        handleErrors(ErrorType.HIDE_ERROR)
+                                    }
+                                    else -> {
+                                        handleErrors(ErrorType.NO_CONNECTION)
+                                        handleReloadButton(textInput.text.toString())
+                                    }
+                                }
+                            }
+                        }
+                        override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+                            handleErrors(ErrorType.NO_CONNECTION)
+                            handleReloadButton(textInput.text.toString())
+                        }
+                    })
+                true
+            }
+            false
+        }
     }
 
-    private fun handleTrackList() {
-        val trackList = mutableListOf<Track>(
-            Track("Smells Like Teen Spirit",
-                "Nirvana",
-                "5:01",
-                "https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/7b/58/c2/7b58c21a-2b51-2bb2-e59a-9bb9b96ad8c3/00602567924166.rgb.jpg/100x100bb.jpg"),
-            Track("Billie Jean",
-                "Michael Jackson",
-                "4:35",
-                "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/3d/9d/38/3d9d3811-71f0-3a0e-1ada-3004e56ff852/827969428726.jpg/100x100bb.jpg"),
-            Track("Stayin' Alive",
-                "Bee Gees",
-                "4:10",
-                "https://is4-ssl.mzstatic.com/image/thumb/Music115/v4/1f/80/1f/1f801fc1-8c0f-ea3e-d3e5-387c6619619e/16UMGIM86640.rgb.jpg/100x100bb.jpg"),
-            Track("Whole Lotta Love",
-                "Led Zeppelin",
-                "5:33",
-                "https://is2-ssl.mzstatic.com/image/thumb/Music62/v4/7e/17/e3/7e17e33f-2efa-2a36-e916-7f808576cf6b/mzm.fyigqcbs.jpg/100x100bb.jpg"),
-            Track("Sweet Child O'Mine",
-                "Guns N' Roses",
-                "5:03",
-                "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg")
-        )
-
+    private fun handleTrackList(trackList: ArrayList<Track>) {
         val recyclerView = findViewById<RecyclerView>(R.id.list_of_tracks)
         recyclerView.adapter = TrackAdapter(trackList)
+    }
+
+    enum class ErrorType {
+        NO_CONNECTION,
+        NOT_FOUND,
+        HIDE_ERROR
     }
 
     companion object {

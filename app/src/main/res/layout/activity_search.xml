@@ -1,68 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    style="@style/SettingsAndSearchBackground">
+    android:layout_height="match_parent">
+
     <LinearLayout
+        android:id="@+id/search_top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <ImageView
             android:id="@+id/search_back_button"
+            style="@style/SettingsTopPanel"
             android:layout_width="@dimen/back_button_size"
             android:layout_height="@dimen/back_button_size"
-            android:scaleType="centerInside"
-            android:src="@drawable/arrow_back_icon"
-            android:foreground="?attr/selectableItemBackground"
             android:layout_gravity="center"
-            style="@style/SettingsTopPanel" />
+            android:foreground="?attr/selectableItemBackground"
+            android:scaleType="centerInside"
+            android:src="@drawable/arrow_back_icon" />
 
         <TextView
+            style="@style/SettingsTopPanel"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:fontFamily="@font/ys_display_medium"
             android:gravity="center_vertical"
             android:paddingStart="@dimen/search_padding"
             android:text="@string/search"
-            android:textSize="@dimen/text_size"
-            style="@style/SettingsTopPanel"
-            android:fontFamily="@font/ys_display_medium"
-            android:textFontWeight="500" />
+            android:textFontWeight="500"
+            android:textSize="@dimen/text_size" />
     </LinearLayout>
+
     <FrameLayout
+        android:id="@+id/search_box"
         android:layout_width="match_parent"
         android:layout_height="@dimen/search_bar_height"
         android:paddingHorizontal="@dimen/search_bar_horizontal_padding"
-        android:paddingVertical="@dimen/search_bar_vertical_padding">
+        android:paddingVertical="@dimen/search_bar_vertical_padding"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_top_bar">
+
         <EditText
             android:id="@+id/search_bar"
+            style="@style/SearchBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/search_bar"
             android:drawableLeft="@drawable/search_icon_inside_search_bar"
             android:drawablePadding="@dimen/icon_padding"
-            style="@style/SearchBar"
-            android:textColor="@color/black"
             android:fontFamily="@font/ys_display_regular"
             android:hint="@string/search"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:lines="1"
             android:paddingLeft="@dimen/search_padding"
-            android:textSize="@dimen/medium_text_size"/>
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/medium_text_size" />
+
         <ImageView
             android:id="@+id/clear_search_button"
+            style="@style/SearchBarCloseButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|right"
-            android:paddingRight="@dimen/search_padding"
-            style="@style/SearchBarCloseButton"/>
+            android:paddingRight="@dimen/search_padding" />
     </FrameLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_of_tracks"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="@dimen/track_list_top_padding"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/track_list_top_padding"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_box" />
 
-</LinearLayout>
+    <FrameLayout
+        android:id="@+id/errorView"
+        android:layout_width="@dimen/ErrorViewSize"
+        android:layout_height="@dimen/ErrorViewSize"
+        app:layout_constraintTop_toBottomOf="@+id/search_box"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/ErrorRViewTopMargin">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/ErrorViewBackgroundLeftMargin"
+            android:layout_marginTop="@dimen/ErrorViewBackgroundTopMargin"
+            style="@style/ErrorViewBackground" />
+
+        <ImageView
+            android:id="@+id/errorIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/ErrorViewBackgroundIconLeftMargin"
+            android:layout_marginTop="@dimen/ErrorViewBackgroundIconTopMargin" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/ErrorViewForegroundLeftMargin"
+            android:layout_marginTop="@dimen/ErrorViewForegroundTopMargin"
+            style="@style/ErrorViewForeground" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/errorText"
+        android:layout_width="@dimen/ErrorMessageWidth"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ErrorMessageTopMargin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/errorView"
+        style="@style/ErrorMessage" />
+    
+    <Button
+        android:id="@+id/reloadButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/errorText"
+        android:layout_marginTop="@dimen/ReloadButtonTopMargin"
+        style="@style/ReloadButton"
+        android:text="@string/reload_button_text"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

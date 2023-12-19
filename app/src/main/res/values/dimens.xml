@@ -31,4 +31,18 @@
     <dimen name="track_small_text_size">11sp</dimen>
     <dimen name="track_right_arrow_top_margin">18dp</dimen>
     <dimen name="track_right_arrow_right_margin">12dp</dimen>
+
+    <dimen name="ErrorViewSize">120dp</dimen>
+    <dimen name="ErrorRViewTopMargin">102dp</dimen>
+    <dimen name="ErrorViewBackgroundLeftMargin">9dp</dimen>
+    <dimen name="ErrorViewBackgroundTopMargin">3dp</dimen>
+    <dimen name="ErrorViewBackgroundIconLeftMargin">37dp</dimen>
+    <dimen name="ErrorViewBackgroundIconTopMargin">28dp</dimen>
+    <dimen name="ErrorViewForegroundLeftMargin">80dp</dimen>
+    <dimen name="ErrorViewForegroundTopMargin">6dp</dimen>
+
+    <dimen name="ErrorMessageWidth">312dp</dimen>
+    <dimen name="ErrorMessageTopMargin">16dp</dimen>
+
+    <dimen name="ReloadButtonTopMargin">24dp</dimen>
 </resources>

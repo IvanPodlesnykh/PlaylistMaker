@@ -12,4 +12,10 @@
     <string name="mail_to_dev_text">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="search">Поиск</string>
     <string name="practicum_link">https://practicum.yandex.ru/profile/android-developer/</string>
+
+    <string name="error_message">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+
+    <string name="not_found_message">Ничего не нашлось</string>
+
+    <string name="reload_button_text">Обновить</string>
 </resources>
