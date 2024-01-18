@@ -21,4 +21,12 @@
 
     <string name="search_history_title">Вы искали</string>
     <string name="search_history_reload_clear_button">Очистить историю</string>
+
+<!--    Track info in player-->
+    <string name="info_country">Страна</string>
+    <string name="info_genre">Жанр</string>
+    <string name="info_year">Год</string>
+    <string name="info_album">Альбом</string>
+    <string name="info_playtime">Длительность</string>
+
 </resources>

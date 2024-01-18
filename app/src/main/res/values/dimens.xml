@@ -49,4 +49,7 @@
     <dimen name="HistoryTopMargin">24dp</dimen>
     <dimen name="HistoryListTopMargin">8dp</dimen>
     <dimen name="ClearHistoryButtonTopMargin">24dp</dimen>
+
+    <dimen name="PlayerArtworkTopMargin">42dp</dimen>
+    <dimen name="PlayerArtworkCornerRadius">8dp</dimen>
 </resources>
