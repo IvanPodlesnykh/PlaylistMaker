@@ -15,6 +15,7 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
 import retrofit2.Callback
@@ -162,7 +163,11 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if(s.isNullOrEmpty()) {
                     clearButton.visibility = View.GONE
-                } else clearButton.visibility = View.VISIBLE
+                    searchHistory.isVisible = true
+                } else {
+                    clearButton.visibility = View.VISIBLE
+                    searchHistory.isVisible = false
+                }
 
                 searchString = s.toString()
             }
