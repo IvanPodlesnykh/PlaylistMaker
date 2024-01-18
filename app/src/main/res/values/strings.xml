@@ -18,4 +18,7 @@
     <string name="not_found_message">Ничего не нашлось</string>
 
     <string name="reload_button_text">Обновить</string>
+
+    <string name="search_history_title">Вы искали</string>
+    <string name="search_history_reload_clear_button">Очистить историю</string>
 </resources>

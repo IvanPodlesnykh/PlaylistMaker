@@ -14,19 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        loadTheme()
-
         handleButtons()
-    }
-
-    private fun loadTheme() {
-        val sharedPreferences = getSharedPreferences("sharedPref", MODE_PRIVATE)
-        if(sharedPreferences.getBoolean("DARK_THEME_KEY", true)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        }
-        else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
     }
 
     private fun handleButtons() {

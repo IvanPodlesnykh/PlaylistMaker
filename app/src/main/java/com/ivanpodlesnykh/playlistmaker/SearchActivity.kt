@@ -1,7 +1,6 @@
 package com.ivanpodlesnykh.playlistmaker
 
 import android.content.Context
-import android.media.Image
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,18 +10,18 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 class SearchActivity : AppCompatActivity() {
 
@@ -59,6 +58,8 @@ class SearchActivity : AppCompatActivity() {
         handleBackButton()
 
         handleTextInput()
+
+        handleSearchHistory()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -139,6 +140,8 @@ class SearchActivity : AppCompatActivity() {
 
         val textInput = findViewById<EditText>(R.id.search_bar)
 
+        val searchHistory = findViewById<ScrollView>(R.id.searchHistory)
+
         val clearButton = findViewById<ImageView>(R.id.clear_search_button)
         clearButton.visibility = View.GONE
 
@@ -149,6 +152,7 @@ class SearchActivity : AppCompatActivity() {
             inputMethodManager?.hideSoftInputFromWindow(view?.windowToken, 0)
             handleTrackList(arrayListOf())
             handleErrors(ErrorType.HIDE_ERROR)
+            textInput.clearFocus()
         }
 
         val textWatcher = object: TextWatcher {
@@ -159,7 +163,11 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if(s.isNullOrEmpty()) {
                     clearButton.visibility = View.GONE
-                } else clearButton.visibility = View.VISIBLE
+                    searchHistory.isVisible = true
+                } else {
+                    clearButton.visibility = View.VISIBLE
+                    searchHistory.isVisible = false
+                }
 
                 searchString = s.toString()
             }
@@ -175,6 +183,7 @@ class SearchActivity : AppCompatActivity() {
             handleErrors(ErrorType.HIDE_ERROR)
             handleTrackList(arrayListOf())
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                searchHistory.visibility = View.GONE
                 MusicService.search(textInput.text.toString())
                     .enqueue(object : Callback<SearchResponse> {
                         override fun onResponse(
@@ -211,14 +220,46 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.adapter = TrackAdapter(trackList)
     }
 
-    enum class ErrorType {
-        NO_CONNECTION,
-        NOT_FOUND,
-        HIDE_ERROR
+    private fun handleSearchHistory() {
+        val textInput = findViewById<EditText>(R.id.search_bar)
+        val searchHistoryView = findViewById<ScrollView>(R.id.searchHistory)
+        val clearButton = findViewById<Button>(R.id.clear_search_history_button)
+        val recyclerView = findViewById<RecyclerView>(R.id.searchHistoryList)
+
+        val sharedPreferences = getSharedPreferences("sharedPref", MODE_PRIVATE)
+        val searchHistory = SearchHistory(sharedPreferences)
+
+        val adapter = TrackAdapter(searchHistory.getTrackList())
+
+        recyclerView.adapter = TrackAdapter(searchHistory.getTrackList())
+
+        clearButton.setOnClickListener {
+            searchHistory.clearTrackList()
+            adapter.notifyDataSetChanged()
+            val view = currentFocus
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            inputMethodManager?.hideSoftInputFromWindow(view?.windowToken, 0)
+            searchHistoryView.visibility = View.GONE
+            textInput.clearFocus()
+        }
+
+        textInput.setOnFocusChangeListener { _, hasFocus ->
+            if(hasFocus && textInput.text.isEmpty() && sharedPreferences.getString("SEARCH_HISTORY", null) != null) {
+                searchHistoryView.visibility = View.VISIBLE
+                recyclerView.adapter = TrackAdapter(searchHistory.getTrackList())
+            }
+            else searchHistoryView.visibility = View.GONE
+        }
     }
 
     companion object {
         private const val SEARCH_STRING_KEY = "SEARCH_INPUT"
         private const val SEARCH_STRING_DEF = ""
     }
+}
+
+enum class ErrorType {
+    NO_CONNECTION,
+    NOT_FOUND,
+    HIDE_ERROR
 }

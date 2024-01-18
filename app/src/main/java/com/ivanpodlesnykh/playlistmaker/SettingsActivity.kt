@@ -1,6 +1,7 @@
 package com.ivanpodlesnykh.playlistmaker
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
@@ -41,7 +42,7 @@ class SettingsActivity : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
 
-        darkThemeSwitch.setOnCheckedChangeListener{ _, isChecked ->
+        darkThemeSwitch.setOnCheckedChangeListener{ switcher, isChecked ->
             if(isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 saveTheme(true)
@@ -62,8 +63,9 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun loadTheme(): Boolean {
+        val defaultTheme = resources.configuration.uiMode == Configuration.UI_MODE_NIGHT_YES
         val sharedPreferences = getSharedPreferences("sharedPref", MODE_PRIVATE)
-        return sharedPreferences.getBoolean("DARK_THEME_KEY", true)
+        return sharedPreferences.getBoolean("DARK_THEME_KEY", defaultTheme)
     }
 
     private fun handleShareButton() {

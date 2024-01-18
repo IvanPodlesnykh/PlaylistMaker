@@ -45,4 +45,8 @@
     <dimen name="ErrorMessageTopMargin">16dp</dimen>
 
     <dimen name="ReloadButtonTopMargin">24dp</dimen>
+
+    <dimen name="HistoryTopMargin">24dp</dimen>
+    <dimen name="HistoryListTopMargin">8dp</dimen>
+    <dimen name="ClearHistoryButtonTopMargin">24dp</dimen>
 </resources>
