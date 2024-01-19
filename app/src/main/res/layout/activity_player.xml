@@ -36,22 +36,27 @@
         app:layout_constraintStart_toEndOf="@id/left_guideline"
         app:layout_constraintEnd_toStartOf="@+id/right_guideline"
         android:layout_marginTop="@dimen/PlayerArtworkTopMargin"
+        android:adjustViewBounds="true"
         android:src="@drawable/player_track_cover_placeholder"/>
 
     <TextView
         android:id="@+id/player_track_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/left_guideline"
         app:layout_constraintTop_toBottomOf="@+id/player_cover_artwork"
-        style="@style/PlayerTrackName"/>
+        app:layout_constraintEnd_toStartOf="@id/right_guideline"
+        style="@style/PlayerTrackName"
+        android:text="Track title"/>
     <TextView
         android:id="@+id/player_artist_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/left_guideline"
         app:layout_constraintTop_toBottomOf="@id/player_track_name"
-        style="@style/PlayerArtistName"/>
+        app:layout_constraintEnd_toStartOf="@id/right_guideline"
+        style="@style/PlayerArtistName"
+        android:text="Artist name"/>
 <!-- Buttons-->
     <ImageView
         android:id="@+id/player_play_button"
@@ -60,7 +65,7 @@
         app:layout_constraintStart_toEndOf="@id/left_guideline"
         app:layout_constraintEnd_toStartOf="@id/right_guideline"
         app:layout_constraintTop_toBottomOf="@id/player_artist_name"
-        app:layout_constraintBottom_toTopOf="@id/track_info_playtime_name"
+        app:layout_constraintBottom_toTopOf="@id/player_current_playtime"
         style="@style/PlayerPlayButton"/>
 
     <ImageView
@@ -79,7 +84,7 @@
         app:layout_constraintTop_toTopOf="@+id/player_play_button"
         app:layout_constraintBottom_toBottomOf="@id/player_play_button"
         app:layout_constraintEnd_toStartOf="@id/right_guideline"
-        style="@style/PlayerkLikeButton"/>
+        style="@style/PlayerLikeButton"/>
 
 <!--    Track info-->
     <TextView
@@ -89,7 +94,9 @@
         app:layout_constraintTop_toBottomOf="@id/player_play_button"
         app:layout_constraintStart_toEndOf="@id/left_guideline"
         app:layout_constraintEnd_toStartOf="@id/right_guideline"
-        style="@style/CurrentPlaytime"/>
+        app:layout_constraintBottom_toTopOf="@id/track_info_playtime_name"
+        style="@style/CurrentPlaytime"
+        android:text="current playtime"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/left_info_guideline"
@@ -125,7 +132,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/right_info_guideline"
         app:layout_constraintBottom_toTopOf="@id/track_info_album"
-        style="@style/TrackInfo"/>
+        style="@style/TrackInfo"
+        android:text="length"/>
 
 <!--    Album-->
     <TextView
@@ -138,11 +146,14 @@
         android:text="@string/info_album"/>
     <TextView
         android:id="@+id/track_info_album"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/right_info_guideline"
         app:layout_constraintBottom_toTopOf="@id/track_info_year"
-        style="@style/TrackInfo"/>
+        app:layout_constraintStart_toEndOf="@id/track_info_playtime_name"
+        android:gravity="end"
+        style="@style/TrackInfo"
+        android:text="album title"/>
 
 <!--    Year-->
     <TextView
@@ -159,7 +170,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/right_info_guideline"
         app:layout_constraintBottom_toTopOf="@id/track_info_genre"
-        style="@style/TrackInfo"/>
+        style="@style/TrackInfo"
+        android:text="release year"/>
 
 <!--    Genre-->
     <TextView
@@ -176,7 +188,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/right_info_guideline"
         app:layout_constraintBottom_toTopOf="@id/track_info_country"
-        style="@style/TrackInfo"/>
+        style="@style/TrackInfo"
+        android:text="genre"/>
 
 <!--    Country-->
     <TextView
@@ -193,6 +206,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/right_info_guideline"
         app:layout_constraintBottom_toBottomOf="@id/bottom_info_guideline"
-        style="@style/TrackInfo"/>
+        style="@style/TrackInfo"
+        android:text="country"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
