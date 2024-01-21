@@ -1,16 +1,14 @@
 package com.ivanpodlesnykh.playlistmaker
 
-import android.content.SharedPreferences
-import android.view.LayoutInflater
+import android.content.Intent
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -40,6 +38,14 @@ class TrackViewHolder(itemView: View) : ViewHolder(itemView) {
 
         itemView.setOnClickListener{
             searchHistory.saveTrackToList(track)
+
+            val playerIntent = Intent(itemView.context, PlayerActivity::class.java)
+
+            val json = Gson().toJson(track)
+
+            playerIntent.putExtra("track", json)
+
+            itemView.context.startActivity(playerIntent)
         }
     }
 }
