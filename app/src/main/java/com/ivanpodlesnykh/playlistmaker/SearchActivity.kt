@@ -11,7 +11,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -142,6 +141,8 @@ class SearchActivity : AppCompatActivity() {
 
         val searchHistory = findViewById<ScrollView>(R.id.searchHistory)
 
+        val sharedPreferences = getSharedPreferences("sharedPref", MODE_PRIVATE)
+
         val clearButton = findViewById<ImageView>(R.id.clear_search_button)
         clearButton.visibility = View.GONE
 
@@ -163,7 +164,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if(s.isNullOrEmpty()) {
                     clearButton.visibility = View.GONE
-                    searchHistory.isVisible = true
+                    searchHistory.isVisible = sharedPreferences.getString("SEARCH_HISTORY", null) != null
                 } else {
                     clearButton.visibility = View.VISIBLE
                     searchHistory.isVisible = false
