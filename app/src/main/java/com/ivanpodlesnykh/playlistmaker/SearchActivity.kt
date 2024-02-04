@@ -224,17 +224,17 @@ class SearchActivity : AppCompatActivity() {
     private fun handleSearchHistory() {
         val textInput = findViewById<EditText>(R.id.search_bar)
         val searchHistoryView = findViewById<ScrollView>(R.id.searchHistory)
-        val clearButton = findViewById<Button>(R.id.clear_search_history_button)
-        val recyclerView = findViewById<RecyclerView>(R.id.searchHistoryList)
+        val clearSearchHistoryButton = findViewById<Button>(R.id.clear_search_history_button)
+        val searchHistoryRecyclerView = findViewById<RecyclerView>(R.id.searchHistoryList)
 
         val sharedPreferences = getSharedPreferences("sharedPref", MODE_PRIVATE)
         val searchHistory = SearchHistory(sharedPreferences)
 
         val adapter = TrackAdapter(searchHistory.getTrackList())
 
-        recyclerView.adapter = TrackAdapter(searchHistory.getTrackList())
+        searchHistoryRecyclerView.adapter = TrackAdapter(searchHistory.getTrackList())
 
-        clearButton.setOnClickListener {
+        clearSearchHistoryButton.setOnClickListener {
             searchHistory.clearTrackList()
             adapter.notifyDataSetChanged()
             val view = currentFocus
@@ -247,7 +247,7 @@ class SearchActivity : AppCompatActivity() {
         textInput.setOnFocusChangeListener { _, hasFocus ->
             if(hasFocus && textInput.text.isEmpty() && sharedPreferences.getString("SEARCH_HISTORY", null) != null) {
                 searchHistoryView.visibility = View.VISIBLE
-                recyclerView.adapter = TrackAdapter(searchHistory.getTrackList())
+                searchHistoryRecyclerView.adapter = TrackAdapter(searchHistory.getTrackList())
             }
             else searchHistoryView.visibility = View.GONE
         }
