@@ -1,6 +1,8 @@
 package com.ivanpodlesnykh.playlistmaker
 
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,6 +15,16 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
+
+    private lateinit var backButton: ImageView
+
+    private var playerState = STATE_DEFAULT
+
+    private lateinit var playButton: ImageView
+
+    private var mediaPlayer = MediaPlayer()
+
+    private lateinit var url: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -22,13 +34,34 @@ class PlayerActivity : AppCompatActivity() {
 
         handleButtons()
 
+        preparePlayer()
+
     }
 
     private fun handleButtons() {
-        val backButton = findViewById<ImageView>(R.id.player_back_button)
+        playButton = findViewById(R.id.player_play_button)
+
+        handlePlayPauseButton(true)
+
+        playButton.setOnClickListener {
+            playbackControl()
+        }
+
+        backButton = findViewById(R.id.player_back_button)
 
         backButton.setOnClickListener{
             this.finish()
+        }
+    }
+
+    private fun handlePlayPauseButton(play: Boolean) {
+        val nightModeFlag = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        if (nightModeFlag == Configuration.UI_MODE_NIGHT_YES) {
+            if(play) playButton.setImageDrawable(getDrawable(R.drawable.player_play_button_night))
+            else playButton.setImageDrawable(getDrawable(R.drawable.player_pause_button_night))
+        } else {
+            if(play) playButton.setImageDrawable(getDrawable(R.drawable.player_play_button_daylight))
+            else playButton.setImageDrawable(getDrawable(R.drawable.player_pause_button_daylight))
         }
     }
 
@@ -77,6 +110,60 @@ class PlayerActivity : AppCompatActivity() {
                 collectionNameTitle.isVisible = false
             }
 
+            url = track.previewUrl
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+    }
+
+    private fun playbackControl() {
+        when(playerState) {
+            STATE_PLAYING -> {
+                pausePlayer()
+            }
+            STATE_PREPARED, STATE_PAUSED -> {
+                startPlayer()
+            }
+        }
+    }
+
+    private fun preparePlayer() {
+        mediaPlayer.setDataSource(url)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
+            //play.isEnabled = true
+            playerState = STATE_PREPARED
+        }
+        mediaPlayer.setOnCompletionListener {
+            handlePlayPauseButton(true)
+            playerState = STATE_PREPARED
+        }
+    }
+
+    private fun startPlayer() {
+        mediaPlayer.start()
+        handlePlayPauseButton(false)
+        playerState = STATE_PLAYING
+    }
+
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        handlePlayPauseButton(true)
+        playerState = STATE_PAUSED
+    }
+
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
     }
 }

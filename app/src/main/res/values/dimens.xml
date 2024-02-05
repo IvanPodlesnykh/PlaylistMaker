@@ -52,4 +52,6 @@
 
     <dimen name="PlayerArtworkTopMargin">42dp</dimen>
     <dimen name="PlayerArtworkCornerRadius">8dp</dimen>
+
+    <dimen name="ProgressBarSize">44dp</dimen>
 </resources>
