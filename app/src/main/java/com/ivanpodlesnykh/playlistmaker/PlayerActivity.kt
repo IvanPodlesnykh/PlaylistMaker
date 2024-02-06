@@ -4,6 +4,8 @@ import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -18,17 +20,36 @@ class PlayerActivity : AppCompatActivity() {
 
     private lateinit var backButton: ImageView
 
-    private var playerState = STATE_DEFAULT
-
     private lateinit var playButton: ImageView
+
+    private lateinit var currentTrackTime : TextView
+
+    private lateinit var url: String
+
+    private var mainThreadHandler: Handler? = null
 
     private var mediaPlayer = MediaPlayer()
 
-    private lateinit var url: String
+    private var playerState = STATE_DEFAULT
+
+    private val updateTime = object : Runnable {
+        override fun run() {
+            mainThreadHandler?.post {
+                currentTrackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault())
+                    .format(mediaPlayer.currentPosition)
+                mainThreadHandler?.postDelayed(this, UPDATE_TIME)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
+        mainThreadHandler = Handler(Looper.getMainLooper())
+
+        currentTrackTime = findViewById(R.id.player_current_playtime)
 
         handleTrackInfo()
 
@@ -69,7 +90,6 @@ class PlayerActivity : AppCompatActivity() {
         val trackCover = findViewById<ImageView>(R.id.player_cover_artwork)
         val trackName = findViewById<TextView>(R.id.player_track_name)
         val artistName = findViewById<TextView>(R.id.player_artist_name)
-        val currentPlaytime = findViewById<TextView>(R.id.player_current_playtime)
         val trackPlaytime = findViewById<TextView>(R.id.track_info_playtime)
         val releaseDate = findViewById<TextView>(R.id.track_info_year)
         val primaryGenreName = findViewById<TextView>(R.id.track_info_genre)
@@ -95,8 +115,7 @@ class PlayerActivity : AppCompatActivity() {
             primaryGenreName.text = track.primaryGenreName
             country.text = track.country
 
-            //change it later to show current playtime!
-            currentPlaytime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
+            currentTrackTime.text = getString(R.string.current_playtime_default)
 
             trackPlaytime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
 
@@ -115,6 +134,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
+        mainThreadHandler?.removeCallbacks(updateTime)
         super.onPause()
         pausePlayer()
     }
@@ -143,8 +163,10 @@ class PlayerActivity : AppCompatActivity() {
             playerState = STATE_PREPARED
         }
         mediaPlayer.setOnCompletionListener {
+            mainThreadHandler?.removeCallbacks(updateTime)
             handlePlayPauseButton(true)
             playerState = STATE_PREPARED
+            currentTrackTime.text = getString(R.string.current_playtime_default)
         }
     }
 
@@ -152,9 +174,11 @@ class PlayerActivity : AppCompatActivity() {
         mediaPlayer.start()
         handlePlayPauseButton(false)
         playerState = STATE_PLAYING
+        mainThreadHandler?.post(updateTime)
     }
 
     private fun pausePlayer() {
+        mainThreadHandler?.removeCallbacks(updateTime)
         mediaPlayer.pause()
         handlePlayPauseButton(true)
         playerState = STATE_PAUSED
@@ -165,5 +189,7 @@ class PlayerActivity : AppCompatActivity() {
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
+
+        private const val UPDATE_TIME = 200L
     }
 }
