@@ -2,15 +2,17 @@ package com.ivanpodlesnykh.playlistmaker
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +34,10 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var reloadButton: Button
 
+    private lateinit var searchList: RecyclerView
+
+    private lateinit var loadingProgressBar: ProgressBar
+
     private var searchString: String = SEARCH_STRING_DEF
 
     private val baseUrl = "https://itunes.apple.com"
@@ -43,6 +49,10 @@ class SearchActivity : AppCompatActivity() {
         .build()
     private val MusicService = retrofit.create(MusicApi::class.java)
 
+    val searchRunnable = Runnable { searchRequest() }
+
+    private val handler = Handler(Looper.getMainLooper())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -51,6 +61,9 @@ class SearchActivity : AppCompatActivity() {
         errorView = findViewById(R.id.errorView)
         errorText = findViewById(R.id.errorText)
         reloadButton = findViewById(R.id.reloadButton)
+        searchList = findViewById(R.id.list_of_tracks)
+        loadingProgressBar = findViewById(R.id.loadingProgressBar)
+        loadingProgressBar.isVisible = false
 
         handleErrors(ErrorType.HIDE_ERROR)
 
@@ -164,10 +177,16 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if(s.isNullOrEmpty()) {
                     clearButton.visibility = View.GONE
+                    searchList.isVisible = false
                     searchHistory.isVisible = sharedPreferences.getString("SEARCH_HISTORY", null) != null
+                    handler.removeCallbacks(searchRunnable)
+                    handleErrors(ErrorType.HIDE_ERROR)
                 } else {
                     clearButton.visibility = View.VISIBLE
+                    searchList.isVisible = true
                     searchHistory.isVisible = false
+                    searchDebounce()
+                    handleErrors(ErrorType.HIDE_ERROR)
                 }
 
                 searchString = s.toString()
@@ -179,46 +198,64 @@ class SearchActivity : AppCompatActivity() {
 
         }
         textInput.addTextChangedListener(textWatcher)
+    }
 
-        textInput.setOnEditorActionListener { _, actionId, _ ->
-            handleErrors(ErrorType.HIDE_ERROR)
-            handleTrackList(arrayListOf())
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                searchHistory.visibility = View.GONE
-                MusicService.search(textInput.text.toString())
-                    .enqueue(object : Callback<SearchResponse> {
-                        override fun onResponse(
-                            call: Call<SearchResponse>,
-                            response: Response<SearchResponse>
-                        ) {
-                            if (response.body()?.results!!.isEmpty()) handleErrors(ErrorType.NOT_FOUND)
-                            else {
-                                when(response.code()){
-                                    200 -> {
-                                        handleTrackList(response.body()?.results!!)
-                                        handleErrors(ErrorType.HIDE_ERROR)
-                                    }
-                                    else -> {
-                                        handleErrors(ErrorType.NO_CONNECTION)
-                                        handleReloadButton(textInput.text.toString())
-                                    }
-                                }
+    private fun searchRequest() {
+
+        val textInput = findViewById<EditText>(R.id.search_bar)
+
+        val searchHistory = findViewById<ScrollView>(R.id.searchHistory)
+
+        searchHistory.visibility = View.GONE
+
+        searchList.isVisible = false
+
+        loadingProgressBar.isVisible = true
+
+        MusicService.search(textInput.text.toString())
+            .enqueue(object : Callback<SearchResponse> {
+                override fun onResponse(
+                    call: Call<SearchResponse>,
+                    response: Response<SearchResponse>
+                ) {
+                    if (response.body()?.results!!.isEmpty()) {
+                        handleErrors(ErrorType.NOT_FOUND)
+                        searchList.isVisible = false
+                    }
+                    else {
+                        when (response.code()) {
+                            200 -> {
+                                searchList.isVisible = true
+                                handleTrackList(response.body()?.results!!)
+                                handleErrors(ErrorType.HIDE_ERROR)
+                            }
+
+                            else -> {
+                                searchList.isVisible = false
+                                handleErrors(ErrorType.NO_CONNECTION)
+                                handleReloadButton(textInput.text.toString())
                             }
                         }
-                        override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                            handleErrors(ErrorType.NO_CONNECTION)
-                            handleReloadButton(textInput.text.toString())
-                        }
-                    })
-                true
-            }
-            false
-        }
+                    }
+                    loadingProgressBar.isVisible = false
+                }
+
+                override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+                    handleErrors(ErrorType.NO_CONNECTION)
+                    searchList.isVisible = false
+                    handleReloadButton(textInput.text.toString())
+                    loadingProgressBar.isVisible = false
+                }
+            })
+    }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
     private fun handleTrackList(trackList: ArrayList<Track>) {
-        val recyclerView = findViewById<RecyclerView>(R.id.list_of_tracks)
-        recyclerView.adapter = TrackAdapter(trackList)
+        searchList.adapter = TrackAdapter(trackList)
     }
 
     private fun handleSearchHistory() {
@@ -256,6 +293,8 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         private const val SEARCH_STRING_KEY = "SEARCH_INPUT"
         private const val SEARCH_STRING_DEF = ""
+
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
 

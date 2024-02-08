@@ -28,5 +28,5 @@
     <string name="info_year">Год</string>
     <string name="info_album">Альбом</string>
     <string name="info_playtime">Длительность</string>
-
+    <string name="current_playtime_default">00:00</string>
 </resources>

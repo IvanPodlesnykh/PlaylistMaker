@@ -145,6 +145,10 @@
         <item name="android:src">@drawable/player_play_button_daylight</item>
     </style>
 
+    <style name="PlayerPauseButton">
+        <item name="android:src">@drawable/player_pause_button_daylight</item>
+    </style>
+
     <style name="PlayerAddToPlaylistButton">
         <item name="android:src">@drawable/player_add_track_to_playlist_button</item>
     </style>

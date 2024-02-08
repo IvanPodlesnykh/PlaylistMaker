@@ -11,8 +11,12 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Locale
+import kotlin.math.abs
 
 class TrackViewHolder(itemView: View) : ViewHolder(itemView) {
+    
+    private var activatedAt: Long? = null
+    
     val songName = itemView.findViewById<TextView>(R.id.track_name)
     val artistName = itemView.findViewById<TextView>(R.id.artist_name)
     val trackTime = itemView.findViewById<TextView>(R.id.track_time)
@@ -37,15 +41,24 @@ class TrackViewHolder(itemView: View) : ViewHolder(itemView) {
             .into(trackCover)
 
         itemView.setOnClickListener{
-            searchHistory.saveTrackToList(track)
+            
+            if(activatedAt == null || abs(activatedAt!! - System.currentTimeMillis()) >= DEBOUNCER_TIME) {
+                activatedAt = System.currentTimeMillis()
 
-            val playerIntent = Intent(itemView.context, PlayerActivity::class.java)
+                searchHistory.saveTrackToList(track)
 
-            val json = Gson().toJson(track)
+                val playerIntent = Intent(itemView.context, PlayerActivity::class.java)
 
-            playerIntent.putExtra("track", json)
+                val json = Gson().toJson(track)
 
-            itemView.context.startActivity(playerIntent)
+                playerIntent.putExtra("track", json)
+
+                itemView.context.startActivity(playerIntent)
+            }
         }
+    }
+
+    companion object {
+        const val DEBOUNCER_TIME = 1000L
     }
 }
