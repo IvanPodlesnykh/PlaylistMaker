@@ -13,7 +13,7 @@ class App : Application() {
     }
 
     private fun loadTheme() {
-        val defaultTheme = resources.configuration.uiMode == Configuration.UI_MODE_NIGHT_YES
+        val defaultTheme = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
         val sharedPreferences = getSharedPreferences("sharedPref", MODE_PRIVATE)
         if(sharedPreferences.getBoolean("DARK_THEME_KEY", defaultTheme)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
