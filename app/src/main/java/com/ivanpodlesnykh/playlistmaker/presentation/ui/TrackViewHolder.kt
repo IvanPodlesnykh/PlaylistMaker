@@ -1,4 +1,4 @@
-package com.ivanpodlesnykh.playlistmaker
+package com.ivanpodlesnykh.playlistmaker.presentation.ui
 
 import android.content.Intent
 import android.view.View
@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
+import com.ivanpodlesnykh.playlistmaker.R
+import com.ivanpodlesnykh.playlistmaker.data.shared_preferences.SearchHistory
+import com.ivanpodlesnykh.playlistmaker.domain.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.math.abs

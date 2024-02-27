@@ -1,8 +1,10 @@
-package com.ivanpodlesnykh.playlistmaker
+package com.ivanpodlesnykh.playlistmaker.presentation.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
+import com.ivanpodlesnykh.playlistmaker.R
+import com.ivanpodlesnykh.playlistmaker.domain.models.Track
 
 class TrackAdapter(val trackList: List<Track>) : Adapter<TrackViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {

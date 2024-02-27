@@ -1,4 +1,4 @@
-package com.ivanpodlesnykh.playlistmaker
+package com.ivanpodlesnykh.playlistmaker.presentation.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -18,6 +18,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.ivanpodlesnykh.playlistmaker.R
+import com.ivanpodlesnykh.playlistmaker.data.shared_preferences.SearchHistory
+import com.ivanpodlesnykh.playlistmaker.data.dto.SearchResponse
+import com.ivanpodlesnykh.playlistmaker.data.network.MusicApi
+import com.ivanpodlesnykh.playlistmaker.domain.models.Track
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
