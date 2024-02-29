@@ -6,7 +6,7 @@ import com.ivanpodlesnykh.playlistmaker.domain.models.PlayerState
 
 class PlayerRepositoryImpl: PlayerRepository {
 
-    lateinit var player: MediaPlayer
+    private lateinit var player: MediaPlayer
 
     private var state = PlayerState.STATE_DEFAULT
     override fun play() {

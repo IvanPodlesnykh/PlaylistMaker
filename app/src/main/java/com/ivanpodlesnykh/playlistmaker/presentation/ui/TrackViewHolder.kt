@@ -29,7 +29,7 @@ class TrackViewHolder(itemView: View) : ViewHolder(itemView) {
     val sharedPreferences = itemView.context.getSharedPreferences("sharedPref",
         AppCompatActivity.MODE_PRIVATE
     )
-    val searchHistory = SearchHistory(sharedPreferences)
+    private val searchHistory = SearchHistory(sharedPreferences)
 
     fun bind(track: Track) {
         songName.text = track.trackName

@@ -32,7 +32,7 @@ class PlayerActivity : AppCompatActivity() {
 
     private var mainThreadHandler: Handler? = null
 
-    private lateinit var playerInteractor: PlayerInteractor
+    private val playerInteractor: PlayerInteractor = Creator.getPlayerInteractor()
 
     private val updateTime = object : Runnable {
         override fun run() {
@@ -54,8 +54,6 @@ class PlayerActivity : AppCompatActivity() {
         currentTrackTime = findViewById(R.id.player_current_playtime)
 
         handleTrackInfo()
-
-        playerInteractor = Creator.getPlayerInteractor()
 
         playerInteractor.preparePlayer(url) {
             handlePlayPauseButton(true)
