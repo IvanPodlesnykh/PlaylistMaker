@@ -1,4 +1,4 @@
-package com.ivanpodlesnykh.playlistmaker
+package com.ivanpodlesnykh.playlistmaker.presentation.ui
 
 import android.app.Application
 import android.content.res.Configuration

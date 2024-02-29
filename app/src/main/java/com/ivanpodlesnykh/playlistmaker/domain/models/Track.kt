@@ -1,4 +1,4 @@
-package com.ivanpodlesnykh.playlistmaker
+package com.ivanpodlesnykh.playlistmaker.domain.models
 
 data class Track(
     val trackName: String,

@@ -1,8 +1,7 @@
-package com.ivanpodlesnykh.playlistmaker
+package com.ivanpodlesnykh.playlistmaker.presentation.ui.player
 
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,6 +12,11 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
+import com.ivanpodlesnykh.playlistmaker.Creator
+import com.ivanpodlesnykh.playlistmaker.R
+import com.ivanpodlesnykh.playlistmaker.domain.api.PlayerInteractor
+import com.ivanpodlesnykh.playlistmaker.domain.models.PlayerState
+import com.ivanpodlesnykh.playlistmaker.domain.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -28,15 +32,13 @@ class PlayerActivity : AppCompatActivity() {
 
     private var mainThreadHandler: Handler? = null
 
-    private var mediaPlayer = MediaPlayer()
-
-    private var playerState = STATE_DEFAULT
+    private val playerInteractor: PlayerInteractor = Creator.getPlayerInteractor()
 
     private val updateTime = object : Runnable {
         override fun run() {
             mainThreadHandler?.post {
                 currentTrackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault())
-                    .format(mediaPlayer.currentPosition)
+                    .format(playerInteractor.getCurrentPlaytime())
                 mainThreadHandler?.postDelayed(this, UPDATE_TIME)
             }
         }
@@ -53,10 +55,12 @@ class PlayerActivity : AppCompatActivity() {
 
         handleTrackInfo()
 
+        playerInteractor.preparePlayer(url) {
+            handlePlayPauseButton(true)
+            currentTrackTime.text = getString(R.string.current_playtime_default)
+        }
+
         handleButtons()
-
-        preparePlayer()
-
     }
 
     private fun handleButtons() {
@@ -141,55 +145,37 @@ class PlayerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.release()
+        playerInteractor.stopPlayer()
     }
 
     private fun playbackControl() {
-        when(playerState) {
-            STATE_PLAYING -> {
+        when(playerInteractor.getPlayerState()) {
+            PlayerState.STATE_PLAYING -> {
                 pausePlayer()
             }
-            STATE_PREPARED, STATE_PAUSED -> {
+            PlayerState.STATE_PREPARED, PlayerState.STATE_PAUSED -> {
+                startPlayer()
+            }
+
+            else -> {
                 startPlayer()
             }
         }
     }
 
-    private fun preparePlayer() {
-        mediaPlayer.setDataSource(url)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            //play.isEnabled = true
-            playerState = STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            mainThreadHandler?.removeCallbacks(updateTime)
-            handlePlayPauseButton(true)
-            playerState = STATE_PREPARED
-            currentTrackTime.text = getString(R.string.current_playtime_default)
-        }
-    }
-
     private fun startPlayer() {
-        mediaPlayer.start()
+        playerInteractor.playMusic()
         handlePlayPauseButton(false)
-        playerState = STATE_PLAYING
         mainThreadHandler?.post(updateTime)
     }
 
     private fun pausePlayer() {
         mainThreadHandler?.removeCallbacks(updateTime)
-        mediaPlayer.pause()
+        playerInteractor.pauseMusic()
         handlePlayPauseButton(true)
-        playerState = STATE_PAUSED
     }
 
     companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
-
         private const val UPDATE_TIME = 200L
     }
 }
