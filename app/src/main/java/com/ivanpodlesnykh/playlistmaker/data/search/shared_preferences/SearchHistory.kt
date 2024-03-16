@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
 
-class SearchHistory(val sharedPreferences: SharedPreferences) {
+class SearchHistory(private val sharedPreferences: SharedPreferences) {
 
     private var trackList: ArrayList<Track> = arrayListOf()
 

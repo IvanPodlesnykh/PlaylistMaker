@@ -18,7 +18,7 @@ class PlayerViewModel(url: String, private val playerInteractor: PlayerInteracto
 
     private val mainThreadHandler = Handler(Looper.getMainLooper())
 
-    private var playerStateLiveData = MutableLiveData<PlayerState>()
+    private val playerStateLiveData = MutableLiveData<PlayerState>()
     fun getPlayerStateLiveData(): LiveData<PlayerState> = playerStateLiveData
 
     private val currentPlaytimeLiveData = MutableLiveData<String>()

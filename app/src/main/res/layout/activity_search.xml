@@ -71,7 +71,7 @@
     </FrameLayout>
 
     <ProgressBar
-        android:id="@+id/loadingProgressBar"
+        android:id="@+id/loading_progress_bar"
         android:layout_width="@dimen/ProgressBarSize"
         android:layout_height="@dimen/ProgressBarSize"
         android:indeterminateTint="@color/blue"
@@ -92,7 +92,7 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <FrameLayout
-        android:id="@+id/errorView"
+        android:id="@+id/error_view"
         android:layout_width="@dimen/ErrorViewSize"
         android:layout_height="@dimen/ErrorViewSize"
         app:layout_constraintTop_toBottomOf="@+id/search_box"
@@ -108,7 +108,7 @@
             style="@style/ErrorViewBackground" />
 
         <ImageView
-            android:id="@+id/errorIcon"
+            android:id="@+id/error_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/ErrorViewBackgroundIconLeftMargin"
@@ -123,27 +123,27 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/errorText"
+        android:id="@+id/error_text"
         android:layout_width="@dimen/ErrorMessageWidth"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/ErrorMessageTopMargin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/errorView"
+        app:layout_constraintTop_toBottomOf="@id/error_view"
         style="@style/ErrorMessage" />
 
     <Button
-        android:id="@+id/reloadButton"
+        android:id="@+id/reload_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/errorText"
+        app:layout_constraintTop_toBottomOf="@id/error_text"
         android:layout_marginTop="@dimen/ReloadButtonTopMargin"
         style="@style/ReloadButton"
         android:text="@string/reload_button_text"/>
     <ScrollView
-        android:id="@+id/searchHistory"
+        android:id="@+id/search_history"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/HistoryTopMargin"
@@ -160,7 +160,7 @@
                 style="@style/searchHistoryTitle"
                 android:text="@string/search_history_title"/>
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/searchHistoryList"
+                android:id="@+id/search_history_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/HistoryListTopMargin"
