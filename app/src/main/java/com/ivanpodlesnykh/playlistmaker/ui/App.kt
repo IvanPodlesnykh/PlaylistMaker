@@ -3,11 +3,14 @@ package com.ivanpodlesnykh.playlistmaker.ui
 import android.app.Application
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
+import com.ivanpodlesnykh.playlistmaker.creator.Creator
 
 class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        Creator.setApplication(this)
 
         loadTheme()
     }

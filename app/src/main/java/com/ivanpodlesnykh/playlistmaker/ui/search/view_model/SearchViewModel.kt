@@ -1,6 +1,5 @@
 package com.ivanpodlesnykh.playlistmaker.ui.search.view_model
 
-import android.app.Application
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -101,9 +100,9 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
 
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
 
-        fun getViewModelFactory(application: Application): ViewModelProvider.Factory = viewModelFactory {
+        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val searchInteractor = Creator.getSearchInteractor(application)
+                val searchInteractor = Creator.getSearchInteractor()
 
                 SearchViewModel(searchInteractor)
             }

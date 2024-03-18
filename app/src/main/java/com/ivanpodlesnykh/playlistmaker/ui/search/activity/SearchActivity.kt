@@ -31,7 +31,7 @@ class SearchActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(
             this,
-            SearchViewModel.getViewModelFactory(application)
+            SearchViewModel.getViewModelFactory()
         )[SearchViewModel::class.java]
 
         binding.loadingProgressBar.isVisible = false
