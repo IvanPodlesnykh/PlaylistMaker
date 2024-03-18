@@ -1,46 +1,45 @@
 package com.ivanpodlesnykh.playlistmaker.ui.main.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.ivanpodlesnykh.playlistmaker.R
+import androidx.lifecycle.ViewModelProvider
+import com.ivanpodlesnykh.playlistmaker.databinding.ActivityMainBinding
+import com.ivanpodlesnykh.playlistmaker.ui.main.view_model.MainViewModel
 import com.ivanpodlesnykh.playlistmaker.ui.media.activity.MediaActivity
 import com.ivanpodlesnykh.playlistmaker.ui.search.activity.SearchActivity
 import com.ivanpodlesnykh.playlistmaker.ui.settings.activity.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+
+    private lateinit var viewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        viewModel = ViewModelProvider(this, MainViewModel.getMainViewModelFactory(application))[MainViewModel::class.java]
 
         handleButtons()
     }
 
     private fun handleButtons() {
-        val searchButton = findViewById<Button>(R.id.search_button)
-        val mediaButton = findViewById<Button>(R.id.media_button)
-        val settingsButton = findViewById<Button>(R.id.settings_button)
-
         val searchButtonClickListener: View.OnClickListener = object : View.OnClickListener {
             override fun onClick(p0: View?) {
-                val searchIntent = Intent(this@MainActivity, SearchActivity::class.java)
-                startActivity(searchIntent)
+                viewModel.openActivity(SearchActivity::class.java)
             }
         }
 
-        searchButton.setOnClickListener(searchButtonClickListener)
+        binding.searchButton.setOnClickListener(searchButtonClickListener)
 
-        mediaButton.setOnClickListener{
-            val mediaIntent = Intent(this, MediaActivity::class.java)
-            startActivity(mediaIntent)
+        binding.mediaButton.setOnClickListener{
+            viewModel.openActivity(MediaActivity::class.java)
         }
 
-        settingsButton.setOnClickListener{
-            val settingsIntent = Intent(this, SettingsActivity::class.java)
-            startActivity(settingsIntent)
+        binding.settingsButton.setOnClickListener{
+            viewModel.openActivity(SettingsActivity::class.java)
         }
     }
 }
