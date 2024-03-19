@@ -47,7 +47,7 @@ object Creator {
     }
 
     fun getSharingInteractor(): SharingInteractor {
-        return SharingInteractorImpl(getExternalNavigator())
+        return SharingInteractorImpl(getExternalNavigator(), getSettingsRepository())
     }
 
     private fun getSettingsRepository(): SettingsRepository {
