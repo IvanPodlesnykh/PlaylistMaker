@@ -4,7 +4,9 @@ import com.ivanpodlesnykh.playlistmaker.domain.player.api.PlayerInteractor
 import com.ivanpodlesnykh.playlistmaker.domain.player.api.PlayerRepository
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.PlayerState
 
-class PlayerInteractorImpl(private val playerRepository: PlayerRepository): PlayerInteractor {
+class PlayerInteractorImpl(
+    private val playerRepository: PlayerRepository
+): PlayerInteractor {
     override fun playMusic() {
         playerRepository.play()
     }

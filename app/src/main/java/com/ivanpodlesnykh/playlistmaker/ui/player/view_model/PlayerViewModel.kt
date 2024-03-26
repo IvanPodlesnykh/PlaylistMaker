@@ -5,10 +5,6 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.ivanpodlesnykh.playlistmaker.creator.Creator
 import com.ivanpodlesnykh.playlistmaker.domain.player.api.PlayerInteractor
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.PlayerState
 import java.text.SimpleDateFormat
@@ -65,12 +61,5 @@ class PlayerViewModel(url: String, private val playerInteractor: PlayerInteracto
     companion object {
 
         private const val UPDATE_TIME = 200L
-        fun getViewModelFactory(url: String): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val playerInteractor = Creator.getPlayerInteractor()
-
-                PlayerViewModel(url, playerInteractor)
-            }
-        }
     }
 }

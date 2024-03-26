@@ -1,6 +1,7 @@
 package com.ivanpodlesnykh.playlistmaker.data.settings
 
 import android.app.Application
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 import com.ivanpodlesnykh.playlistmaker.R
@@ -8,10 +9,10 @@ import com.ivanpodlesnykh.playlistmaker.domain.settings.api.SettingsRepository
 import com.ivanpodlesnykh.playlistmaker.domain.settings.models.ThemeSettings
 import com.ivanpodlesnykh.playlistmaker.domain.sharing.models.EmailData
 
-class SettingsRepositoryImpl(private val application: Application) : SettingsRepository {
-
-    private val sharedPreferences =
-        application.getSharedPreferences("sharedPref", Application.MODE_PRIVATE)
+class SettingsRepositoryImpl(
+    private val application: Application,
+    private val sharedPreferences: SharedPreferences
+) : SettingsRepository {
 
     override fun getThemeSettings(): ThemeSettings {
         val defaultTheme =

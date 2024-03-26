@@ -3,14 +3,22 @@ package com.ivanpodlesnykh.playlistmaker.ui
 import android.app.Application
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
-import com.ivanpodlesnykh.playlistmaker.creator.Creator
+import com.ivanpodlesnykh.playlistmaker.di.dataModule
+import com.ivanpodlesnykh.playlistmaker.di.interactorModule
+import com.ivanpodlesnykh.playlistmaker.di.repositoryModule
+import com.ivanpodlesnykh.playlistmaker.di.viewModelModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
 
-        Creator.setApplication(this)
+        startKoin {
+            androidContext(this@App)
+            modules(dataModule, repositoryModule, interactorModule, viewModelModule)
+        }
 
         loadTheme()
     }

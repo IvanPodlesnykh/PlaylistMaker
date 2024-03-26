@@ -4,29 +4,16 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import androidx.appcompat.app.AppCompatActivity
 import com.ivanpodlesnykh.playlistmaker.data.search.network.MusicApi
 import com.ivanpodlesnykh.playlistmaker.data.search.shared_preferences.SearchHistory
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
 import com.ivanpodlesnykh.playlistmaker.domain.search.api.SearchRepository
 import com.ivanpodlesnykh.playlistmaker.util.Resource
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
-class SearchRepositoryImpl(private val application: Application): SearchRepository {
-    private val baseUrl = "https://itunes.apple.com"
-
-    private val retrofit = Retrofit
-        .Builder()
-        .baseUrl(baseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-
-    private val musicService = retrofit.create(MusicApi::class.java)
-
-    private val searchHistory = SearchHistory(application.getSharedPreferences("sharedPref",
-        AppCompatActivity.MODE_PRIVATE
-    ))
+class SearchRepositoryImpl(
+    private val application: Application,
+    private val musicService: MusicApi,
+    private val searchHistory: SearchHistory): SearchRepository {
 
     override fun searchTrack(request: String): Resource<List<Track>> {
 

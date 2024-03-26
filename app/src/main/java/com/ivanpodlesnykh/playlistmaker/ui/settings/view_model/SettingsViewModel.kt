@@ -1,10 +1,6 @@
 package com.ivanpodlesnykh.playlistmaker.ui.settings.view_model
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.ivanpodlesnykh.playlistmaker.creator.Creator
 import com.ivanpodlesnykh.playlistmaker.domain.settings.api.SettingsInteractor
 import com.ivanpodlesnykh.playlistmaker.domain.settings.models.ThemeSettings
 import com.ivanpodlesnykh.playlistmaker.domain.sharing.api.SharingInteractor
@@ -38,15 +34,5 @@ class SettingsViewModel(
 
     fun contactUserSupport() {
         sharingInteractor.openSupport()
-    }
-
-    companion object {
-        fun getViewModelFactory() : ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val sharingInteractor = Creator.getSharingInteractor()
-                val settingsInteractor = Creator.getSettingsInteractor()
-                SettingsViewModel(sharingInteractor, settingsInteractor)
-            }
-        }
     }
 }
