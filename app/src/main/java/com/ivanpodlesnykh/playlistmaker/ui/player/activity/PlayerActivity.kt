@@ -3,10 +3,8 @@ package com.ivanpodlesnykh.playlistmaker.ui.player.activity
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.gson.Gson
@@ -15,6 +13,8 @@ import com.ivanpodlesnykh.playlistmaker.databinding.ActivityPlayerBinding
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.PlayerState
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
 import com.ivanpodlesnykh.playlistmaker.ui.player.view_model.PlayerViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -22,8 +22,9 @@ class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
 
-    private lateinit var viewModel: PlayerViewModel
-
+    private val viewModel: PlayerViewModel by viewModel<PlayerViewModel> {
+        parametersOf(Gson().fromJson(intent.extras!!.getString("track"), Track::class.java).previewUrl)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPlayerBinding.inflate(layoutInflater)
@@ -31,8 +32,6 @@ class PlayerActivity : AppCompatActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         val track: Track = Gson().fromJson(intent.extras!!.getString("track"), Track::class.java)
-
-        viewModel = ViewModelProvider(this, PlayerViewModel.getViewModelFactory(track.previewUrl))[PlayerViewModel::class.java]
 
         viewModel.getPlayerStateLiveData().observe(this){
             when(it){

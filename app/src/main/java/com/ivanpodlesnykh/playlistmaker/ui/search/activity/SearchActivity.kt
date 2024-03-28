@@ -8,7 +8,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.ivanpodlesnykh.playlistmaker.R
 import com.ivanpodlesnykh.playlistmaker.databinding.ActivitySearchBinding
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
@@ -16,6 +15,7 @@ import com.ivanpodlesnykh.playlistmaker.domain.search.models.ErrorType
 import com.ivanpodlesnykh.playlistmaker.domain.search.models.SearchState
 import com.ivanpodlesnykh.playlistmaker.ui.search.TrackAdapter
 import com.ivanpodlesnykh.playlistmaker.ui.search.view_model.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
@@ -23,16 +23,12 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
 
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel by viewModel<SearchViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        viewModel = ViewModelProvider(
-            this,
-            SearchViewModel.getViewModelFactory()
-        )[SearchViewModel::class.java]
 
         binding.loadingProgressBar.isVisible = false
         binding.clearSearchButton.isVisible = false
