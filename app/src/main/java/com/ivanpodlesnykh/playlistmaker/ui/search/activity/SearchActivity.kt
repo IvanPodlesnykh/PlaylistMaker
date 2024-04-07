@@ -76,6 +76,12 @@ class SearchActivity : AppCompatActivity() {
         prepareSearchHistory()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.getSearchHistory()
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_STRING_KEY, searchString)
