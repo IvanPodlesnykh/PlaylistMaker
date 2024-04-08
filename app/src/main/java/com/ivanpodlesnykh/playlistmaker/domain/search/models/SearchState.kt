@@ -12,5 +12,7 @@ sealed class SearchState {
 
     data class ShowHistory(val trackList: List<Track>) : SearchState()
 
+    data class UpdateHistory(val trackList: List<Track>) : SearchState()
+
     data class ShowTrackList(val trackList: List<Track>) : SearchState()
 }

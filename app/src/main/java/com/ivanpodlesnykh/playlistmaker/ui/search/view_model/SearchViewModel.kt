@@ -81,6 +81,10 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
         renderState(SearchState.ShowHistory(searchInteractor.loadSearchHistory()))
     }
 
+    fun updateSearchHistory() {
+        renderState(SearchState.UpdateHistory(searchInteractor.loadSearchHistory()))
+    }
+
     fun isSearchHistoryEmpty() : Boolean {
         return searchInteractor.loadSearchHistory().isEmpty()
     }
