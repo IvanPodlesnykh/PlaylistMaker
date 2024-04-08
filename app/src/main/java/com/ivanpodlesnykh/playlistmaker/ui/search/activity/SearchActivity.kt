@@ -66,6 +66,10 @@ class SearchActivity : AppCompatActivity() {
                     binding.listOfTracks.adapter = adapter
                     adapter.notifyDataSetChanged()
                 }
+
+                is SearchState.UpdateHistory -> {
+                    updateSearchHistory(it.trackList)
+                }
             }
         }
 
@@ -74,12 +78,6 @@ class SearchActivity : AppCompatActivity() {
         handleTextInput()
 
         prepareSearchHistory()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        viewModel.getSearchHistory()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -119,6 +117,11 @@ class SearchActivity : AppCompatActivity() {
                 binding.reloadButton.isVisible = false
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateSearchHistory()
     }
 
     private fun handleReloadButton(text: String) {
@@ -210,6 +213,12 @@ class SearchActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
 
         binding.searchHistory.isVisible = true
+    }
+
+    private fun updateSearchHistory(trackList: List<Track>) {
+        val adapter = TrackAdapter(trackList)
+        binding.searchHistoryList.adapter = adapter
+        adapter.notifyDataSetChanged()
     }
 
     companion object {
