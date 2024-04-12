@@ -54,4 +54,6 @@
     <dimen name="PlayerArtworkCornerRadius">8dp</dimen>
 
     <dimen name="ProgressBarSize">44dp</dimen>
+
+    <dimen name="MediaBackButtonMargin">4dp</dimen>
 </resources>

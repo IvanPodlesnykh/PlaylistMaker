@@ -30,4 +30,12 @@
     <string name="info_album">Альбом</string>
     <string name="info_playtime">Длительность</string>
     <string name="current_playtime_default">00:00</string>
+
+<!--    Media library-->
+    <string name="media_library">Медиатека</string>
+    <string name="empty_media_library">Ваша медиатека пуста</string>
+    <string name="new_playlist">Новый плейлист</string>
+    <string name="no_playlist_text">Вы не создали\nни одного плейлиста</string>
+    <string name="favorite_tracks">Избранные треки</string>
+    <string name="playlists">Плейлисты</string>
 </resources>
