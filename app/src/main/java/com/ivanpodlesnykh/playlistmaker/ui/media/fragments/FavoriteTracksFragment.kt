@@ -15,14 +15,16 @@ class FavoriteTracksFragment : Fragment() {
 
     private val viewModel: FavoriteTracksViewModel by viewModel<FavoriteTracksViewModel>()
 
-    private lateinit var binding: FragmentFavoriteTracksBinding
+    private var _binding: FragmentFavoriteTracksBinding? = null
+    private val binding
+        get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFavoriteTracksBinding.inflate(inflater, container, false)
+        _binding = FragmentFavoriteTracksBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -34,6 +36,11 @@ class FavoriteTracksFragment : Fragment() {
                 is FavoriteTracksState.NoContent -> showNoContent()
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun showNoContent() {
