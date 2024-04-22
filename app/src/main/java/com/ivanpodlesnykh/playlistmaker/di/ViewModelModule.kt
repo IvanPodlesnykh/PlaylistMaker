@@ -1,6 +1,5 @@
 package com.ivanpodlesnykh.playlistmaker.di
 
-import com.ivanpodlesnykh.playlistmaker.ui.main.view_model.MainViewModel
 import com.ivanpodlesnykh.playlistmaker.ui.media.view_model.FavoriteTracksViewModel
 import com.ivanpodlesnykh.playlistmaker.ui.media.view_model.PlaylistsViewModel
 import com.ivanpodlesnykh.playlistmaker.ui.player.view_model.PlayerViewModel
@@ -16,10 +15,6 @@ val viewModelModule = module {
 
     factory {
         SearchViewModel(get())
-    }
-
-    factory {
-        MainViewModel(get())
     }
 
     factory {(url: String) ->

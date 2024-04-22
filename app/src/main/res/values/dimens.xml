@@ -11,9 +11,9 @@
     <dimen name="settings_layout_padding">16dp</dimen>
     <dimen name="settings_layout_width">300dp</dimen>
 
-    <dimen name="back_button_size">48dp</dimen>
+    <dimen name="top_title_height">48dp</dimen>
     <dimen name="button_padding">12dp</dimen>
-    <dimen name="search_padding">12dp</dimen>
+    <dimen name="search_padding">16dp</dimen>
     <dimen name="search_bar_height">52dp</dimen>
     <dimen name="search_bar_horizontal_padding">16dp</dimen>
     <dimen name="search_bar_vertical_padding">8dp</dimen>
@@ -55,5 +55,8 @@
 
     <dimen name="ProgressBarSize">44dp</dimen>
 
-    <dimen name="MediaBackButtonMargin">4dp</dimen>
+    <dimen name="MediaTitleMargin">4dp</dimen>
+
+    <dimen name="BottomNavigationViewHeight">56dp</dimen>
+    <dimen name="BottomNavItemPaddings">8dp</dimen>
 </resources>
