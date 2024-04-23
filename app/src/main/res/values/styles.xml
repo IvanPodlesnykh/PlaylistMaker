@@ -225,4 +225,9 @@
 
     </style>
 
+    <style name="ThemeSwitch">
+        <item name="trackTint">@color/light_grey</item>
+        <item name="thumbTint">@color/grey</item>
+    </style>
+
 </resources>

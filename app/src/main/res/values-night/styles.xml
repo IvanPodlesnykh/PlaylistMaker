@@ -212,4 +212,9 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="ThemeSwitch">
+        <item name="trackTint">@color/dark_blue</item>
+        <item name="thumbTint">@color/blue</item>
+    </style>
+
 </resources>

@@ -36,10 +36,11 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right|center_vertical"
                 android:paddingRight="@dimen/icon_padding">
-                <Switch
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/theme_switch"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    style="@style/ThemeSwitch"/>
             </FrameLayout>
         </FrameLayout>
         <FrameLayout
