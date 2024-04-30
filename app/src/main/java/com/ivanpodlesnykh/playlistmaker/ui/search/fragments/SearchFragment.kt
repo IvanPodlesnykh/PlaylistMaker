@@ -1,15 +1,17 @@
-package com.ivanpodlesnykh.playlistmaker.ui.search.activity
+package com.ivanpodlesnykh.playlistmaker.ui.search.fragments
 
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import com.ivanpodlesnykh.playlistmaker.R
-import com.ivanpodlesnykh.playlistmaker.databinding.ActivitySearchBinding
+import com.ivanpodlesnykh.playlistmaker.databinding.FragmentSearchBinding
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
 import com.ivanpodlesnykh.playlistmaker.domain.search.models.ErrorType
 import com.ivanpodlesnykh.playlistmaker.domain.search.models.SearchState
@@ -17,23 +19,37 @@ import com.ivanpodlesnykh.playlistmaker.ui.search.TrackAdapter
 import com.ivanpodlesnykh.playlistmaker.ui.search.view_model.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
 
-    private var searchString: String = SEARCH_STRING_DEF
+    private var searchString: String = SearchFragment.SEARCH_STRING_DEF
 
-    private lateinit var binding: ActivitySearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding
+        get() = _binding!!
 
     private val viewModel by viewModel<SearchViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.loadingProgressBar.isVisible = false
         binding.clearSearchButton.isVisible = false
 
-        viewModel.getSearchStateLiveData().observe(this) {
+        viewModel.getSearchStateLiveData().observe(viewLifecycleOwner) {
             when (it) {
                 is SearchState.Default -> {
                     handleErrors(ErrorType.HIDE_ERROR)
@@ -73,24 +89,9 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        handleBackButton()
-
         handleTextInput()
 
         prepareSearchHistory()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_STRING_KEY, searchString)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        if (savedInstanceState != null) {
-            val textInput = findViewById<EditText>(R.id.search_bar)
-            textInput.setText(savedInstanceState.getString(SEARCH_STRING_KEY, SEARCH_STRING_DEF))
-        }
     }
 
     private fun handleErrors(errorType: ErrorType) {
@@ -130,19 +131,13 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleBackButton() {
-        binding.searchBackButton.setOnClickListener {
-            this.finish()
-        }
-    }
-
     private fun handleTextInput() {
 
         binding.clearSearchButton.setOnClickListener {
             binding.searchBar.setText("")
-            val view = currentFocus
+            val view = requireActivity().currentFocus
             val inputMethodManager =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(view?.windowToken, 0)
             handleTrackList(arrayListOf())
             handleErrors(ErrorType.HIDE_ERROR)
@@ -191,9 +186,9 @@ class SearchActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
 
             viewModel.clearSearchHistory()
-            val view = currentFocus
+            val view = requireActivity().currentFocus
             val inputMethodManager =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(view?.windowToken, 0)
             binding.searchHistory.isVisible = false
             binding.searchBar.clearFocus()

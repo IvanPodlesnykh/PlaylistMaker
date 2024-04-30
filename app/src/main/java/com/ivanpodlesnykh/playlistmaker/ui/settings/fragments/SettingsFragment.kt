@@ -1,25 +1,37 @@
-package com.ivanpodlesnykh.playlistmaker.ui.settings.activity
+package com.ivanpodlesnykh.playlistmaker.ui.settings.fragments
 
 import android.os.Bundle
-import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
-import com.ivanpodlesnykh.playlistmaker.R
-import com.ivanpodlesnykh.playlistmaker.databinding.ActivitySettingsBinding
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.ivanpodlesnykh.playlistmaker.databinding.FragmentSettingsBinding
 import com.ivanpodlesnykh.playlistmaker.ui.settings.view_model.SettingsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsFragment : Fragment() {
 
-    private lateinit var binding: ActivitySettingsBinding
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding
+        get() = _binding!!
 
     private val viewModel by viewModel<SettingsViewModel>()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
-        handleBackButton()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         handleSwitch()
 
@@ -30,19 +42,12 @@ class SettingsActivity : AppCompatActivity() {
         handleUserAgreementButton()
     }
 
-    private fun handleBackButton() {
-        val backButton = findViewById<ImageView>(R.id.settings_back_button)
-        backButton.setOnClickListener {
-            this.finish()
-        }
-    }
-
     private fun handleSwitch() {
         if (viewModel.isNightMode()) {
             binding.themeSwitch.toggle()
         }
 
-        binding.themeSwitch.setOnCheckedChangeListener { switcher, isChecked ->
+        binding.themeSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 viewModel.updateTheme(true)
             } else {
@@ -69,4 +74,3 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 }
-
