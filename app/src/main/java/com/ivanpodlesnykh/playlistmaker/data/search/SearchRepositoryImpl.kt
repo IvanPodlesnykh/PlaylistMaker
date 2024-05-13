@@ -8,7 +8,7 @@ import com.ivanpodlesnykh.playlistmaker.data.search.network.MusicApi
 import com.ivanpodlesnykh.playlistmaker.data.search.shared_preferences.SearchHistory
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
 import com.ivanpodlesnykh.playlistmaker.domain.search.api.SearchRepository
-import com.ivanpodlesnykh.playlistmaker.util.Resource
+import com.ivanpodlesnykh.playlistmaker.utils.Resource
 
 class SearchRepositoryImpl(
     private val application: Application,

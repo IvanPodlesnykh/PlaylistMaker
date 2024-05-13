@@ -3,7 +3,7 @@ package com.ivanpodlesnykh.playlistmaker.domain.search.impl
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
 import com.ivanpodlesnykh.playlistmaker.domain.search.api.SearchInteractor
 import com.ivanpodlesnykh.playlistmaker.domain.search.api.SearchRepository
-import com.ivanpodlesnykh.playlistmaker.util.Resource
+import com.ivanpodlesnykh.playlistmaker.utils.Resource
 import java.util.concurrent.Executors
 
 class SearchInteractorImpl(private val seachRepository: SearchRepository) : SearchInteractor {

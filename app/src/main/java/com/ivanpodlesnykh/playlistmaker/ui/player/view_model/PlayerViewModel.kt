@@ -1,18 +1,20 @@
 package com.ivanpodlesnykh.playlistmaker.ui.player.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ivanpodlesnykh.playlistmaker.domain.player.api.PlayerInteractor
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.PlayerState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerViewModel(url: String, private val playerInteractor: PlayerInteractor) : ViewModel() {
 
-    private val mainThreadHandler = Handler(Looper.getMainLooper())
+    private var timerJob: Job? = null
 
     private val playerStateLiveData = MutableLiveData<PlayerState>()
     fun getPlayerStateLiveData(): LiveData<PlayerState> = playerStateLiveData
@@ -20,41 +22,34 @@ class PlayerViewModel(url: String, private val playerInteractor: PlayerInteracto
     private val currentPlaytimeLiveData = MutableLiveData<String>()
     fun getCurrentPlaytimeLiveData(): LiveData<String> = currentPlaytimeLiveData
 
-    private val updateTimeObject = object : Runnable {
-        override fun run() {
-            mainThreadHandler.post {
+    private fun startTimer() {
+        timerJob = viewModelScope.launch {
+            while (playerStateLiveData.value == PlayerState.STATE_PLAYING) {
+                delay(UPDATE_TIME)
                 currentPlaytimeLiveData.value = SimpleDateFormat("mm:ss", Locale.getDefault())
                     .format(playerInteractor.getCurrentPlaytime())
-                mainThreadHandler?.postDelayed(this, UPDATE_TIME)
             }
         }
     }
     init {
         playerInteractor.preparePlayer(url){
             playerStateLiveData.value = PlayerState.STATE_PREPARED
-            mainThreadHandler.removeCallbacks(updateTimeObject)
         }
     }
 
     fun play() {
-        updateTime()
         playerInteractor.playMusic()
         playerStateLiveData.value = playerInteractor.getPlayerState()
+        startTimer()
     }
 
     fun pause() {
-        mainThreadHandler.removeCallbacks(updateTimeObject)
         playerInteractor.pauseMusic()
         playerStateLiveData.value = playerInteractor.getPlayerState()
     }
 
-    private fun updateTime() {
-        mainThreadHandler.post(updateTimeObject)
-    }
-
     override fun onCleared() {
         playerInteractor.stopPlayer()
-        mainThreadHandler.removeCallbacks(updateTimeObject)
         super.onCleared()
     }
 

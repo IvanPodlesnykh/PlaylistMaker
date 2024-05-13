@@ -1,7 +1,7 @@
 package com.ivanpodlesnykh.playlistmaker.domain.search.api
 
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
-import com.ivanpodlesnykh.playlistmaker.util.Resource
+import com.ivanpodlesnykh.playlistmaker.utils.Resource
 
 interface SearchRepository {
 
