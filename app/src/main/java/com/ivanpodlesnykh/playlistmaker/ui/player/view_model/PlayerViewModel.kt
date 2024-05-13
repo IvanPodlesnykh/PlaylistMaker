@@ -26,8 +26,9 @@ class PlayerViewModel(url: String, private val playerInteractor: PlayerInteracto
         timerJob = viewModelScope.launch {
             while (playerStateLiveData.value == PlayerState.STATE_PLAYING) {
                 delay(UPDATE_TIME)
-                currentPlaytimeLiveData.value = SimpleDateFormat("mm:ss", Locale.getDefault())
-                    .format(playerInteractor.getCurrentPlaytime())
+                if(playerStateLiveData.value == PlayerState.STATE_PLAYING)
+                    currentPlaytimeLiveData.value = SimpleDateFormat("mm:ss", Locale.getDefault())
+                        .format(playerInteractor.getCurrentPlaytime())
             }
         }
     }
@@ -55,6 +56,6 @@ class PlayerViewModel(url: String, private val playerInteractor: PlayerInteracto
 
     companion object {
 
-        private const val UPDATE_TIME = 200L
+        private const val UPDATE_TIME = 300L
     }
 }
