@@ -153,14 +153,14 @@ class SearchFragment : Fragment() {
                 if (s.isNullOrEmpty()) {
                     binding.clearSearchButton.isVisible = false
                     binding.listOfTracks.isVisible = false
-                    viewModel.searchDebounce(s.toString())
+                    viewModel.delaySearch(s.toString())
                     handleTrackList(arrayListOf())
                     handleErrors(ErrorType.HIDE_ERROR)
                 } else {
                     binding.clearSearchButton.isVisible = true
                     binding.listOfTracks.isVisible = true
                     binding.searchHistory.isVisible = false
-                    viewModel.searchDebounce(s.toString())
+                    viewModel.delaySearch(s.toString())
                     handleErrors(ErrorType.HIDE_ERROR)
                 }
 

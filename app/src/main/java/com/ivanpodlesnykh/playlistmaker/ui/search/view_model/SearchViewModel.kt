@@ -1,44 +1,22 @@
 package com.ivanpodlesnykh.playlistmaker.ui.search.view_model
 
-import android.os.Build
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
 import com.ivanpodlesnykh.playlistmaker.domain.search.api.SearchInteractor
 import com.ivanpodlesnykh.playlistmaker.domain.search.models.ErrorType
 import com.ivanpodlesnykh.playlistmaker.domain.search.models.SearchState
+import com.ivanpodlesnykh.playlistmaker.utils.debounce
 
 class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewModel() {
-
-    private val mainThreadHandler = Handler(Looper.getMainLooper())
 
     private val searchStateLiveData = MutableLiveData<SearchState>(SearchState.Default)
     fun getSearchStateLiveData(): LiveData<SearchState> = searchStateLiveData
 
-    private var latestSearchText: String? = null
-    fun searchDebounce(changedText: String){
-        if (changedText.isEmpty()) {
-            mainThreadHandler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-        }
-        if (latestSearchText == changedText)
-            return
-        latestSearchText = changedText
-        mainThreadHandler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-
-        val searchRunnable = Runnable {
-            searchRequest(changedText)
-        }
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            mainThreadHandler.postDelayed(searchRunnable, SEARCH_REQUEST_TOKEN, SEARCH_DEBOUNCE_DELAY)
-        } else {
-            val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
-            mainThreadHandler.postAtTime(searchRunnable, SEARCH_REQUEST_TOKEN, postTime)
-        }
+    val delaySearch = debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) {
+        searchText -> searchRequest(searchText)
     }
 
     fun searchRequest(newSearchRequest: String) {
@@ -96,9 +74,6 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
 
     companion object {
 
-        private val SEARCH_REQUEST_TOKEN = Any()
-
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
-
     }
 }
