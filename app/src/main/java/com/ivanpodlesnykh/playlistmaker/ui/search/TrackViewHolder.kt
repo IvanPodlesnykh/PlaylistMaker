@@ -13,13 +13,13 @@ import com.ivanpodlesnykh.playlistmaker.R
 import com.ivanpodlesnykh.playlistmaker.data.search.shared_preferences.SearchHistory
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
 import com.ivanpodlesnykh.playlistmaker.ui.player.activity.PlayerActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
-import kotlin.math.abs
 
-class TrackViewHolder(itemView: View) : ViewHolder(itemView) {
-    
-    private var activatedAt: Long? = null
+class TrackViewHolder(itemView: View, private val coroutineScope: CoroutineScope) : ViewHolder(itemView) {
     
     val songName = itemView.findViewById<TextView>(R.id.track_name)
     val artistName = itemView.findViewById<TextView>(R.id.artist_name)
@@ -45,20 +45,23 @@ class TrackViewHolder(itemView: View) : ViewHolder(itemView) {
             .into(trackCover)
 
         itemView.setOnClickListener{
-            
-            if(activatedAt == null || abs(activatedAt!! - System.currentTimeMillis()) >= DEBOUNCER_TIME) {
-                activatedAt = System.currentTimeMillis()
 
-                searchHistory.saveTrackToList(track)
+            itemView.isEnabled = false
 
-                val playerIntent = Intent(itemView.context, PlayerActivity::class.java)
-
-                val json = Gson().toJson(track)
-
-                playerIntent.putExtra("track", json)
-
-                itemView.context.startActivity(playerIntent)
+            coroutineScope.launch {
+                delay(DEBOUNCER_TIME)
+                itemView.isEnabled = true
             }
+
+            searchHistory.saveTrackToList(track)
+
+            val playerIntent = Intent(itemView.context, PlayerActivity::class.java)
+
+            val json = Gson().toJson(track)
+
+            playerIntent.putExtra("track", json)
+
+            itemView.context.startActivity(playerIntent)
         }
     }
 

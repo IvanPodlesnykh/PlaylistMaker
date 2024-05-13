@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.ivanpodlesnykh.playlistmaker.R
 import com.ivanpodlesnykh.playlistmaker.databinding.FragmentSearchBinding
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
@@ -78,7 +79,7 @@ class SearchFragment : Fragment() {
                 is SearchState.ShowTrackList -> {
                     handleErrors(ErrorType.HIDE_ERROR)
                     binding.loadingProgressBar.isVisible = false
-                    val adapter = TrackAdapter(it.trackList)
+                    val adapter = TrackAdapter(it.trackList, lifecycleScope)
                     binding.listOfTracks.adapter = adapter
                     adapter.notifyDataSetChanged()
                 }
@@ -176,12 +177,12 @@ class SearchFragment : Fragment() {
     }
 
     private fun handleTrackList(trackList: List<Track>) {
-        binding.listOfTracks.adapter = TrackAdapter(trackList)
+        binding.listOfTracks.adapter = TrackAdapter(trackList, lifecycleScope)
     }
 
     private fun prepareSearchHistory() {
         binding.clearSearchHistoryButton.setOnClickListener {
-            val adapter = TrackAdapter(emptyList())
+            val adapter = TrackAdapter(emptyList(), lifecycleScope)
             binding.searchHistoryList.adapter = adapter
             adapter.notifyDataSetChanged()
 
@@ -203,7 +204,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun showSearchHistory(trackList: List<Track>) {
-        val adapter = TrackAdapter(trackList)
+        val adapter = TrackAdapter(trackList, lifecycleScope)
         binding.searchHistoryList.adapter = adapter
         adapter.notifyDataSetChanged()
 
@@ -211,7 +212,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun updateSearchHistory(trackList: List<Track>) {
-        val adapter = TrackAdapter(trackList)
+        val adapter = TrackAdapter(trackList, lifecycleScope)
         binding.searchHistoryList.adapter = adapter
         adapter.notifyDataSetChanged()
     }
