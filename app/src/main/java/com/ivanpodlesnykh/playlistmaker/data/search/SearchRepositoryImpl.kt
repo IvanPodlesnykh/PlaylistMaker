@@ -29,13 +29,18 @@ class SearchRepositoryImpl(
         }
 
         return withContext(Dispatchers.IO) {
-            val response = musicService.search(request)
+            try {
+                val response = musicService.search(request)
 
-            if(response.resultCount != 0) {
-                Resource.Success(response.results)
-            } else {
-                Resource.Success(emptyList())
+                if(response.resultCount != 0) {
+                    Resource.Success(response.results)
+                } else {
+                    Resource.Success(emptyList())
+                }
+            } catch (e: Throwable) {
+                Resource.Error("no_connection")
             }
+
         }
     }
 
