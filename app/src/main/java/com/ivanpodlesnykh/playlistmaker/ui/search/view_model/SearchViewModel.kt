@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
 import com.ivanpodlesnykh.playlistmaker.domain.search.api.SearchInteractor
 import com.ivanpodlesnykh.playlistmaker.domain.search.models.ErrorType
 import com.ivanpodlesnykh.playlistmaker.domain.search.models.SearchState
 import com.ivanpodlesnykh.playlistmaker.utils.debounce
+import kotlinx.coroutines.launch
 
 class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewModel() {
 
@@ -22,32 +22,29 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
     fun searchRequest(newSearchRequest: String) {
         if(newSearchRequest.isNotEmpty()){
             renderState(SearchState.Loading)
-            searchInteractor.searchTrack(newSearchRequest, object : SearchInteractor.SearchConsumer{
-                override fun consume(foundTrackList: List<Track>, message: String?) {
-                    if(message == "no_connection") {
-                        renderState(
-                            SearchState.Error(ErrorType.NO_CONNECTION)
-                        )
-                        return
-                    }
-                    if (foundTrackList.isNotEmpty()) {
-                        renderState(
-                            SearchState.ShowTrackList(
-                                foundTrackList
+            viewModelScope.launch {
+                searchInteractor.searchTrack(newSearchRequest)
+                    .collect{
+                        if(it.second == "no_connection") {
+                            renderState(
+                                SearchState.Error(ErrorType.NO_CONNECTION)
                             )
-                        )
-                        return
-                    } else {
-                        renderState(
-                            SearchState.Error(
-                                ErrorType.NOT_FOUND
-                            )
-                        )
-                        return
-                    }
-                }
+                            return@collect
+                        }
 
-            })
+                        if(it.first == null) {
+                            renderState(
+                                SearchState.Error(ErrorType.NO_CONNECTION)
+                            )
+                            return@collect
+                        } else {
+                            if (it.first!!.isNotEmpty()) {
+                                renderState(SearchState.ShowTrackList(it.first!!))
+                            }
+                            else renderState(SearchState.Error(ErrorType.NOT_FOUND))
+                        }
+                    }
+            }
         }
     }
 
