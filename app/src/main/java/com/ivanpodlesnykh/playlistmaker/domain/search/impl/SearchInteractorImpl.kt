@@ -3,31 +3,29 @@ package com.ivanpodlesnykh.playlistmaker.domain.search.impl
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
 import com.ivanpodlesnykh.playlistmaker.domain.search.api.SearchInteractor
 import com.ivanpodlesnykh.playlistmaker.domain.search.api.SearchRepository
-import com.ivanpodlesnykh.playlistmaker.util.Resource
-import java.util.concurrent.Executors
+import com.ivanpodlesnykh.playlistmaker.utils.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-class SearchInteractorImpl(private val seachRepository: SearchRepository) : SearchInteractor {
+class SearchInteractorImpl(private val searchRepository: SearchRepository) : SearchInteractor {
 
-    private val executor = Executors.newCachedThreadPool()
     override fun searchTrack(
         request: String,
-        consumer: SearchInteractor.SearchConsumer
-    ) {
-        executor.execute {
-            when(val response = seachRepository.searchTrack(request)){
-                is Resource.Error -> {
-                    consumer.consume(emptyList(), response.message)
+    ) : Flow<Pair<List<Track>?, String?>> {
+        return searchRepository.searchTrack(request)
+            .map {
+                when (it) {
+                    is Resource.Success -> Pair(it.data, "")
+                    is Resource.Error -> Pair(null, it.message)
                 }
-                is Resource.Success -> consumer.consume(response.data!!, response.message)
             }
-        }
     }
 
     override fun loadSearchHistory(): List<Track> {
-        return seachRepository.loadSearchHistory()
+        return searchRepository.loadSearchHistory()
     }
 
     override fun clearSearchHistory() {
-        seachRepository.clearSearchHistory()
+        searchRepository.clearSearchHistory()
     }
 }
