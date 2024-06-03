@@ -7,7 +7,9 @@ interface SearchInteractor {
 
     fun searchTrack(request: String): Flow<Pair<List<Track>?, String?>>
 
-    fun loadSearchHistory() : List<Track>
+    suspend fun loadSearchHistory() : List<Track>
+
+    fun isSearchHistoryEmpty(): Boolean
 
     fun clearSearchHistory()
 }

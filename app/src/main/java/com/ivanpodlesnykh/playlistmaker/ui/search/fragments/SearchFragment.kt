@@ -77,15 +77,13 @@ class SearchFragment : Fragment() {
                 }
 
                 is SearchState.ShowTrackList -> {
+                    binding.listOfTracks.isVisible = true
+
                     handleErrors(ErrorType.HIDE_ERROR)
                     binding.loadingProgressBar.isVisible = false
                     val adapter = TrackAdapter(it.trackList, lifecycleScope)
                     binding.listOfTracks.adapter = adapter
                     adapter.notifyDataSetChanged()
-                }
-
-                is SearchState.UpdateHistory -> {
-                    updateSearchHistory(it.trackList)
                 }
             }
         }
@@ -98,6 +96,9 @@ class SearchFragment : Fragment() {
     private fun handleErrors(errorType: ErrorType) {
         when (errorType) {
             ErrorType.NO_CONNECTION -> {
+                binding.searchHistory.isVisible = false
+                binding.listOfTracks.isVisible = false
+
                 binding.errorView.isVisible = true
                 binding.errorText.isVisible = true
                 binding.reloadButton.isVisible = true
@@ -106,6 +107,9 @@ class SearchFragment : Fragment() {
             }
 
             ErrorType.NOT_FOUND -> {
+                binding.searchHistory.isVisible = false
+                binding.listOfTracks.isVisible = false
+
                 binding.errorView.isVisible = true
                 binding.errorText.isVisible = true
                 binding.errorIcon.setBackgroundResource(R.drawable.not_found)
@@ -123,7 +127,11 @@ class SearchFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.updateSearchHistory()
+        when (viewModel.getSearchStateLiveData().value) {
+            is SearchState.ShowHistory -> {viewModel.getSearchHistory()}
+            is SearchState.ShowTrackList -> {viewModel.searchRequest(binding.searchBar.text.toString())}
+            else -> {viewModel.renderState(SearchState.Default)}
+        }
     }
 
     private fun handleReloadButton(text: String) {

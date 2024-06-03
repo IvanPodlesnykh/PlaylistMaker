@@ -8,7 +8,9 @@ interface SearchRepository {
 
     fun searchTrack(request: String) : Flow<Resource<List<Track>>>
 
-    fun loadSearchHistory() : List<Track>
+    suspend fun loadSearchHistory() : List<Track>
+
+    fun isSearchHistoryEmpty(): Boolean
 
     fun clearSearchHistory()
 }

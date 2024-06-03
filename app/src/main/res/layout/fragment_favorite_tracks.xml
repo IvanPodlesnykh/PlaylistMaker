@@ -4,6 +4,13 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listOfTracks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        />
+
     <ImageView
         android:id="@+id/nothingFoundImage"
         android:layout_width="wrap_content"

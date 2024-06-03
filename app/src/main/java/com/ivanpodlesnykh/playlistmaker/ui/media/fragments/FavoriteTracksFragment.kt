@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.ivanpodlesnykh.playlistmaker.databinding.FragmentFavoriteTracksBinding
 import com.ivanpodlesnykh.playlistmaker.domain.media.models.FavoriteTracksState
+import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
 import com.ivanpodlesnykh.playlistmaker.ui.media.view_model.FavoriteTracksViewModel
+import com.ivanpodlesnykh.playlistmaker.ui.search.TrackAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteTracksFragment : Fragment() {
@@ -34,6 +37,7 @@ class FavoriteTracksFragment : Fragment() {
         viewModel.observeState().observe(viewLifecycleOwner) {
             when(it) {
                 is FavoriteTracksState.NoContent -> showNoContent()
+                is FavoriteTracksState.ShowContent -> showContent(it.listOfFavoriteTracks)
             }
         }
     }
@@ -43,9 +47,30 @@ class FavoriteTracksFragment : Fragment() {
         _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.updateState()
+    }
+
     private fun showNoContent() {
         binding.nothingFoundImage.isVisible = true
         binding.nothingFoundText.isVisible = true
+
+        binding.listOfTracks.isVisible = false
+    }
+
+    private fun showContent(listOfTracks: List<Track>) {
+        binding.nothingFoundImage.isVisible = false
+        binding.nothingFoundText.isVisible = false
+
+        binding.listOfTracks.isVisible = true
+
+        val adapter = TrackAdapter(listOfTracks, lifecycleScope)
+
+        binding.listOfTracks.adapter = adapter
+
+        adapter.notifyDataSetChanged()
     }
 
     companion object {

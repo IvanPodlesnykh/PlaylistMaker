@@ -53,15 +53,14 @@ class SearchViewModel(private val searchInteractor: SearchInteractor) : ViewMode
     }
 
     fun getSearchHistory() {
-        renderState(SearchState.ShowHistory(searchInteractor.loadSearchHistory()))
-    }
-
-    fun updateSearchHistory() {
-        renderState(SearchState.UpdateHistory(searchInteractor.loadSearchHistory()))
+        viewModelScope.launch {
+            val trackList = searchInteractor.loadSearchHistory()
+            renderState(SearchState.ShowHistory(trackList))
+        }
     }
 
     fun isSearchHistoryEmpty() : Boolean {
-        return searchInteractor.loadSearchHistory().isEmpty()
+        return searchInteractor.isSearchHistoryEmpty()
     }
 
     fun clearSearchHistory() {

@@ -23,7 +23,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
 
     private val viewModel: PlayerViewModel by viewModel<PlayerViewModel> {
-        parametersOf(Gson().fromJson(intent.extras!!.getString("track"), Track::class.java).previewUrl)
+        parametersOf(Gson().fromJson(intent.extras!!.getString("track"), Track::class.java))
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +31,7 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        val track: Track = Gson().fromJson(intent.extras!!.getString("track"), Track::class.java)
+        val track = Gson().fromJson(intent.extras!!.getString("track"), Track::class.java)
 
         viewModel.getPlayerStateLiveData().observe(this){
             when(it){
@@ -49,6 +49,24 @@ class PlayerActivity : AppCompatActivity() {
             binding.playerCurrentPlaytime.text = it
         }
 
+        val currentTheme = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+
+        viewModel.getFavoriteTrackLiveData().observe(this) {
+            if(it) {
+                if (currentTheme){
+                    binding.playerLikeButton.setImageResource(R.drawable.player_like_button_active_night)
+                } else {
+                    binding.playerLikeButton.setImageResource(R.drawable.player_like_button_active)
+                }
+            } else {
+                if (currentTheme){
+                    binding.playerLikeButton.setImageResource(R.drawable.player_like_button_night)
+                } else {
+                    binding.playerLikeButton.setImageResource(R.drawable.player_like_button)
+                }
+            }
+        }
+
         handleTrackInfo(track)
 
         handleButtons()
@@ -63,6 +81,10 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.playerBackButton.setOnClickListener{
             this.finish()
+        }
+
+        binding.playerLikeButton.setOnClickListener {
+            viewModel.onFavoriteClicked()
         }
     }
 
