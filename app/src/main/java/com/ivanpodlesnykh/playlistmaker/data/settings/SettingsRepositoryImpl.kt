@@ -1,6 +1,6 @@
 package com.ivanpodlesnykh.playlistmaker.data.settings
 
-import android.app.Application
+import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
@@ -10,13 +10,13 @@ import com.ivanpodlesnykh.playlistmaker.domain.settings.models.ThemeSettings
 import com.ivanpodlesnykh.playlistmaker.domain.sharing.models.EmailData
 
 class SettingsRepositoryImpl(
-    private val application: Application,
+    private val context: Context,
     private val sharedPreferences: SharedPreferences
 ) : SettingsRepository {
 
     override fun getThemeSettings(): ThemeSettings {
         val defaultTheme =
-            (application.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+            (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
         if (sharedPreferences.getBoolean("DARK_THEME_KEY", defaultTheme)) {
             return ThemeSettings.NIGHT_MODE
         } else {
@@ -44,18 +44,18 @@ class SettingsRepositoryImpl(
     }
 
     override fun getShareAppLink(): String {
-        return application.getString(R.string.practicum_link)
+        return context.getString(R.string.practicum_link)
     }
 
     override fun getTermsLink(): String {
-        return application.getString(R.string.user_agreement_url)
+        return context.getString(R.string.user_agreement_url)
     }
 
     override fun getSupportEmailData(): EmailData {
         return EmailData(
-            arrayOf(application.getString(R.string.dev_mail)),
-            application.getString(R.string.mail_to_dev_topic),
-            application.getString(R.string.mail_to_dev_text)
+            arrayOf(context.getString(R.string.dev_mail)),
+            context.getString(R.string.mail_to_dev_topic),
+            context.getString(R.string.mail_to_dev_text)
         )
     }
 }

@@ -1,6 +1,5 @@
 package com.ivanpodlesnykh.playlistmaker.data.search
 
-import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -17,7 +16,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
 class SearchRepositoryImpl(
-    private val application: Application,
+    private val context: Context,
     private val musicService: MusicApi,
     private val searchHistory: SearchHistory,
     private val database: FavoriteTracksDatabase,
@@ -75,7 +74,7 @@ class SearchRepositoryImpl(
     }
 
     private fun isConnected(): Boolean {
-        val connectivityManager = application.getSystemService(
+        val connectivityManager = context.getSystemService(
             Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         if (capabilities != null) {
