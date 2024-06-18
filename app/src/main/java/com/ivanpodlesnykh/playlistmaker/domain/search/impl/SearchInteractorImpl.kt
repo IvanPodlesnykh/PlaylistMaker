@@ -21,8 +21,12 @@ class SearchInteractorImpl(private val searchRepository: SearchRepository) : Sea
             }
     }
 
-    override fun loadSearchHistory(): List<Track> {
+    override suspend fun loadSearchHistory(): List<Track> {
         return searchRepository.loadSearchHistory()
+    }
+
+    override fun isSearchHistoryEmpty(): Boolean {
+        return searchRepository.isSearchHistoryEmpty()
     }
 
     override fun clearSearchHistory() {
