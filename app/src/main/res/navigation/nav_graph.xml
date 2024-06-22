@@ -12,11 +12,22 @@
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.ivanpodlesnykh.playlistmaker.ui.search.fragments.SearchFragment"
-        android:label="SearchFragment" />
+        android:label="SearchFragment" >
+        <action
+            android:id="@+id/action_searchFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mediaFragment"
         android:name="com.ivanpodlesnykh.playlistmaker.ui.media.fragments.MediaFragment"
-        android:label="MediaFragment" />
+        android:label="MediaFragment" >
+        <action
+            android:id="@+id/action_mediaFragment_to_createPlaylistFragment"
+            app:destination="@id/createPlaylistFragment" />
+        <action
+            android:id="@+id/action_mediaFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.ivanpodlesnykh.playlistmaker.ui.settings.fragments.SettingsFragment"
@@ -29,4 +40,16 @@
         android:id="@+id/favoriteTracksFragment"
         android:name="com.ivanpodlesnykh.playlistmaker.ui.media.fragments.FavoriteTracksFragment"
         android:label="FavoriteTracksFragment" />
+    <fragment
+        android:id="@+id/createPlaylistFragment"
+        android:name="com.ivanpodlesnykh.playlistmaker.ui.media.fragments.CreatePlaylistFragment"
+        android:label="CreatePlaylistFragment" />
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.ivanpodlesnykh.playlistmaker.ui.player.activity.PlayerFragment"
+        android:label="PlayerFragment" >
+        <action
+            android:id="@+id/action_playerFragment_to_createPlaylistFragment"
+            app:destination="@id/createPlaylistFragment" />
+    </fragment>
 </navigation>

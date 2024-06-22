@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.ivanpodlesnykh.playlistmaker.R
 import com.ivanpodlesnykh.playlistmaker.databinding.FragmentFavoriteTracksBinding
 import com.ivanpodlesnykh.playlistmaker.domain.media.models.FavoriteTracksState
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
@@ -66,7 +68,7 @@ class FavoriteTracksFragment : Fragment() {
 
         binding.listOfTracks.isVisible = true
 
-        val adapter = TrackAdapter(listOfTracks, lifecycleScope)
+        val adapter = TrackAdapter(listOfTracks, lifecycleScope, findNavController(), R.id.action_mediaFragment_to_playerFragment)
 
         binding.listOfTracks.adapter = adapter
 

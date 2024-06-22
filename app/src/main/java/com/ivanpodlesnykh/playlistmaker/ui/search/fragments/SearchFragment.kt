@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.ivanpodlesnykh.playlistmaker.R
 import com.ivanpodlesnykh.playlistmaker.databinding.FragmentSearchBinding
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
@@ -81,7 +82,7 @@ class SearchFragment : Fragment() {
 
                     handleErrors(ErrorType.HIDE_ERROR)
                     binding.loadingProgressBar.isVisible = false
-                    val adapter = TrackAdapter(it.trackList, lifecycleScope)
+                    val adapter = TrackAdapter(it.trackList, lifecycleScope, findNavController(), R.id.action_searchFragment_to_playerFragment)
                     binding.listOfTracks.adapter = adapter
                     adapter.notifyDataSetChanged()
                 }
@@ -185,12 +186,12 @@ class SearchFragment : Fragment() {
     }
 
     private fun handleTrackList(trackList: List<Track>) {
-        binding.listOfTracks.adapter = TrackAdapter(trackList, lifecycleScope)
+        binding.listOfTracks.adapter = TrackAdapter(trackList, lifecycleScope, findNavController(), R.id.action_searchFragment_to_playerFragment)
     }
 
     private fun prepareSearchHistory() {
         binding.clearSearchHistoryButton.setOnClickListener {
-            val adapter = TrackAdapter(emptyList(), lifecycleScope)
+            val adapter = TrackAdapter(emptyList(), lifecycleScope, findNavController(), R.id.action_searchFragment_to_playerFragment)
             binding.searchHistoryList.adapter = adapter
             adapter.notifyDataSetChanged()
 
@@ -212,7 +213,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun showSearchHistory(trackList: List<Track>) {
-        val adapter = TrackAdapter(trackList, lifecycleScope)
+        val adapter = TrackAdapter(trackList, lifecycleScope, findNavController(), R.id.action_searchFragment_to_playerFragment)
         binding.searchHistoryList.adapter = adapter
         adapter.notifyDataSetChanged()
 
@@ -220,7 +221,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun updateSearchHistory(trackList: List<Track>) {
-        val adapter = TrackAdapter(trackList, lifecycleScope)
+        val adapter = TrackAdapter(trackList, lifecycleScope, findNavController(), R.id.action_searchFragment_to_playerFragment)
         binding.searchHistoryList.adapter = adapter
         adapter.notifyDataSetChanged()
     }

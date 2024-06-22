@@ -2,6 +2,8 @@ package com.ivanpodlesnykh.playlistmaker.di
 
 import com.ivanpodlesnykh.playlistmaker.domain.db.api.FavoriteTracksDatabaseInteractor
 import com.ivanpodlesnykh.playlistmaker.domain.db.impl.FavoriteTracksDatabaseInteractorImpl
+import com.ivanpodlesnykh.playlistmaker.domain.media.api.PlaylistInteractor
+import com.ivanpodlesnykh.playlistmaker.domain.media.impl.PlaylistInteractorImpl
 import com.ivanpodlesnykh.playlistmaker.domain.player.api.PlayerInteractor
 import com.ivanpodlesnykh.playlistmaker.domain.player.impl.PlayerInteractorImpl
 import com.ivanpodlesnykh.playlistmaker.domain.search.api.SearchInteractor
@@ -34,4 +36,7 @@ val interactorModule = module {
         FavoriteTracksDatabaseInteractorImpl(get())
     }
 
+    factory<PlaylistInteractor> {
+        PlaylistInteractorImpl(get())
+    }
 }

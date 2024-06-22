@@ -217,4 +217,67 @@
         <item name="thumbTint">@color/blue</item>
     </style>
 
+    <style name="NewPlaylistTopPanel">
+        <item name="tint">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="CreatePlaylistButton">
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="NewPlaylistBackground">
+        <item name="android:background">@color/yp_black</item>
+    </style>
+
+    <style name="NewPlaylistField">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+    </style>
+
+    <style name="NewPlaylistHint">
+        <item name="android:background">@color/yp_black</item>
+    </style>
+
+    <style name="PlaylistCard">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@color/yp_black</item>
+    </style>
+
+<!--    Player activity bottom sheet-->
+
+    <style name="BottomSheet">
+        <item name="android:backgroundTint">@color/yp_black</item>
+    </style>
+
+    <style name="TopView">
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="BottomSheetTitle">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">19sp</item>
+    </style>
+
+    <style name="BottomSheetPlaylistName">
+        <item name="android:textColor">@color/white</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="BottomSheetPlaylistNumberOfTracks">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/track_small_text_size</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
 </resources>

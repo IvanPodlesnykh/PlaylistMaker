@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import com.google.gson.Gson
 import com.ivanpodlesnykh.playlistmaker.data.converters.FavoriteTracksDbConverter
+import com.ivanpodlesnykh.playlistmaker.data.converters.PlaylistDbConverter
 import com.ivanpodlesnykh.playlistmaker.data.db.FavoriteTracksDatabase
+import com.ivanpodlesnykh.playlistmaker.data.db.PlaylistsDatabase
 import com.ivanpodlesnykh.playlistmaker.data.search.network.MusicApi
 import com.ivanpodlesnykh.playlistmaker.data.search.shared_preferences.SearchHistory
 import org.koin.android.ext.koin.androidContext
@@ -51,5 +53,16 @@ val dataModule = module {
 
     factory {
         FavoriteTracksDbConverter()
+    }
+
+    single {
+        Room.databaseBuilder(androidContext(),
+            PlaylistsDatabase::class.java,
+            "playlists_database.db")
+            .build()
+    }
+
+    factory {
+        PlaylistDbConverter()
     }
 }

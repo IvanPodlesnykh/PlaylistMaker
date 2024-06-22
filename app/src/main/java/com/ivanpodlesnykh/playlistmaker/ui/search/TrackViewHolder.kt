@@ -1,10 +1,11 @@
 package com.ivanpodlesnykh.playlistmaker.ui.search
 
-import android.content.Intent
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -12,14 +13,13 @@ import com.google.gson.Gson
 import com.ivanpodlesnykh.playlistmaker.R
 import com.ivanpodlesnykh.playlistmaker.data.search.shared_preferences.SearchHistory
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
-import com.ivanpodlesnykh.playlistmaker.ui.player.activity.PlayerActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackViewHolder(itemView: View, private val coroutineScope: CoroutineScope) : ViewHolder(itemView) {
+class TrackViewHolder(itemView: View, private val coroutineScope: CoroutineScope, private val navController: NavController, private val destination: Int) : ViewHolder(itemView) {
     
     val songName = itemView.findViewById<TextView>(R.id.track_name)
     val artistName = itemView.findViewById<TextView>(R.id.artist_name)
@@ -55,13 +55,11 @@ class TrackViewHolder(itemView: View, private val coroutineScope: CoroutineScope
 
             searchHistory.saveTrackToList(track)
 
-            val playerIntent = Intent(itemView.context, PlayerActivity::class.java)
-
             val json = Gson().toJson(track)
 
-            playerIntent.putExtra("track", json)
-
-            itemView.context.startActivity(playerIntent)
+            navController.navigate(destination,
+                bundleOf("TRACK" to json)
+            )
         }
     }
 
