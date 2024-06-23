@@ -31,7 +31,8 @@ class PlaylistRepositoryImpl(
         playlistsDatabase.getPlaylistDao().updatePlaylist(playlistDbConverter.map(playlist))
     }
 
-    override fun saveImageToPrivateStorage(uri: String): String {
+    override suspend fun saveImageToPrivateStorage(uri: String): String {
+
         val uriParsed = uri.toUri()
 
         val filePath = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "PlaylistMakerAlbum")

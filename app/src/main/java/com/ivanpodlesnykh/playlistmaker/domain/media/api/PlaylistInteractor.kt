@@ -10,7 +10,7 @@ interface PlaylistInteractor {
 
     suspend fun updatePlaylist(playlist: Playlist)
 
-    fun saveImageToPrivateStorage(uri: String): String
+    suspend fun saveImageToPrivateStorage(uri: String): String
 
     suspend fun getAllPlaylists(): Flow<List<Playlist>>
 

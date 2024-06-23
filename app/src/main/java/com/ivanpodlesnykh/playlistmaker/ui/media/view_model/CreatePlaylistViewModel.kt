@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ivanpodlesnykh.playlistmaker.domain.media.api.PlaylistInteractor
 import com.ivanpodlesnykh.playlistmaker.domain.media.models.Playlist
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CreatePlaylistViewModel(
@@ -40,12 +41,11 @@ class CreatePlaylistViewModel(
 
     fun createPlaylist(title: String, description: String) {
 
-        var savedUri = ""
+        viewModelScope.launch(Dispatchers.IO) {
 
-        if(imageUri.value.isNullOrEmpty()) savedUri = ""
-        else savedUri = playlistInteractor.saveImageToPrivateStorage(imageUri.value!!)
+            val savedUri = if(imageUri.value.isNullOrEmpty()) ""
+            else playlistInteractor.saveImageToPrivateStorage(imageUri.value!!)
 
-        viewModelScope.launch {
             playlistInteractor.createPlaylist(Playlist(title = title,
                 description = description,
                 imageUri = savedUri,

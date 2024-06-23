@@ -20,6 +20,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ivanpodlesnykh.playlistmaker.R
 import com.ivanpodlesnykh.playlistmaker.databinding.FragmentCreatePlaylistBinding
 import com.ivanpodlesnykh.playlistmaker.ui.media.view_model.CreatePlaylistViewModel
+import com.ivanpodlesnykh.playlistmaker.utils.UtilFunctions
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreatePlaylistFragment : Fragment() {
@@ -40,7 +41,7 @@ class CreatePlaylistFragment : Fragment() {
 
             Glide.with(requireContext())
                 .load(uri)
-                .transform(CenterCrop(), RoundedCorners(8))
+                .transform(CenterCrop(), RoundedCorners(UtilFunctions().dpToPx(8f, requireContext())))
                 .into(binding.playlistCover)
         }
     }
@@ -52,6 +53,11 @@ class CreatePlaylistFragment : Fragment() {
     ): View {
         _binding = FragmentCreatePlaylistBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

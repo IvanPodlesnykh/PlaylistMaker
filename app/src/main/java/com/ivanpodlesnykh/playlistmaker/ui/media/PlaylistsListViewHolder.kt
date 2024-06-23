@@ -9,6 +9,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.ivanpodlesnykh.playlistmaker.R
 import com.ivanpodlesnykh.playlistmaker.domain.media.models.Playlist
+import com.ivanpodlesnykh.playlistmaker.utils.UtilFunctions
 
 class PlaylistsListViewHolder(private val itemView: View) : ViewHolder(itemView) {
 
@@ -21,7 +22,7 @@ class PlaylistsListViewHolder(private val itemView: View) : ViewHolder(itemView)
         Glide.with(itemView.context)
             .load(playlist.imageUri)
             .placeholder(R.drawable.track_placeholder)
-            .transform(CenterCrop(),  RoundedCorners(8))
+            .transform(CenterCrop(),  RoundedCorners(UtilFunctions().dpToPx(8f, itemView.context)))
             .into(playlistCover)
 
         playlistTitle.text = playlist.title
