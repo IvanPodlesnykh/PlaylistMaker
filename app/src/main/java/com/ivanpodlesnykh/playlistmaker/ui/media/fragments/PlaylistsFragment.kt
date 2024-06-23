@@ -6,8 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import com.ivanpodlesnykh.playlistmaker.R
 import com.ivanpodlesnykh.playlistmaker.databinding.FragmentPlaylistsBinding
+import com.ivanpodlesnykh.playlistmaker.domain.media.models.Playlist
 import com.ivanpodlesnykh.playlistmaker.domain.media.models.PlaylistsState
+import com.ivanpodlesnykh.playlistmaker.ui.media.PlaylistsListAdapter
 import com.ivanpodlesnykh.playlistmaker.ui.media.view_model.PlaylistsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -34,8 +39,20 @@ class PlaylistsFragment : Fragment() {
         viewModel.observeState().observe(viewLifecycleOwner) {
             when(it) {
                 is PlaylistsState.NoPlaylists -> showNoContent()
+                is PlaylistsState.Content -> showContent(it.playlists)
             }
         }
+
+        binding.newPlaylistButton.setOnClickListener {
+            findNavController().navigate(R.id.action_mediaFragment_to_createPlaylistFragment)
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.getPlaylists()
     }
 
     override fun onDestroyView() {
@@ -44,9 +61,23 @@ class PlaylistsFragment : Fragment() {
     }
 
     private fun showNoContent() {
-        binding.newPlaylistButton.isVisible = true
         binding.nothingFoundImage.isVisible = true
         binding.nothingFoundText.isVisible = true
+        binding.playlistsList.isVisible = false
+    }
+
+    private fun showContent(playlists: List<Playlist>) {
+        binding.nothingFoundImage.isVisible = false
+        binding.nothingFoundText.isVisible = false
+
+        binding.playlistsList.layoutManager = GridLayoutManager(requireContext(), 2)
+        val adapter = PlaylistsListAdapter(playlists)
+
+        binding.playlistsList.adapter = adapter
+
+        adapter.notifyDataSetChanged()
+
+        binding.playlistsList.isVisible = true
     }
 
     companion object {

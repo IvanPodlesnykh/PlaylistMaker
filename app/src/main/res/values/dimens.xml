@@ -59,4 +59,6 @@
 
     <dimen name="BottomNavigationViewHeight">56dp</dimen>
     <dimen name="BottomNavItemPaddings">8dp</dimen>
+
+    <dimen name="BackButtonSize">48dp</dimen>
 </resources>
