@@ -51,7 +51,8 @@ class PlaylistDbConverter {
             releaseDate = track.releaseDate,
             primaryGenreName = track.primaryGenreName,
             country = track.country,
-            previewUrl = track.previewUrl
+            previewUrl = track.previewUrl,
+            isFavorite = track.isFavorite
         )
     }
 
@@ -66,7 +67,8 @@ class PlaylistDbConverter {
             releaseDate = trackInPlaylist.releaseDate,
             primaryGenreName = trackInPlaylist.primaryGenreName,
             country = trackInPlaylist.country,
-            previewUrl = trackInPlaylist.previewUrl
+            previewUrl = trackInPlaylist.previewUrl,
+            isFavorite = trackInPlaylist.isFavorite
         )
     }
 }

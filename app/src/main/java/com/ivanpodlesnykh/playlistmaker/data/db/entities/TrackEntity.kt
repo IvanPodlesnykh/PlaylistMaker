@@ -25,5 +25,7 @@ data class TrackEntity(
     val primaryGenreName: String,
     val country: String,
     @ColumnInfo(name = "preview_url")
-    val previewUrl: String
+    val previewUrl: String,
+    @ColumnInfo(name = "is_favorite")
+val isFavorite: Boolean
 )

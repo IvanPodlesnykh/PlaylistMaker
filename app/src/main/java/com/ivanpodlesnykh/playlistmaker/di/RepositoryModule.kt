@@ -35,7 +35,7 @@ val repositoryModule = module {
     }
 
     factory<FavoriteTracksDatabaseRepository> {
-        FavoriteTracksDatabaseRepositoryImpl(get(), get())
+        FavoriteTracksDatabaseRepositoryImpl(get(), get(), get())
     }
 
     factory<PlaylistRepository> {

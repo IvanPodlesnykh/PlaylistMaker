@@ -35,6 +35,10 @@ class MainActivity : AppCompatActivity() {
                     binding.bottomNavigationView.isVisible = false
                     binding.separator.isVisible = false
                 }
+                R.id.playlistFragment -> {
+                    binding.bottomNavigationView.isVisible = false
+                    binding.separator.isVisible = false
+                }
                 else -> {
                     binding.bottomNavigationView.isVisible = true
                     binding.separator.isVisible = true
