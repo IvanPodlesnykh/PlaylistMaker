@@ -12,6 +12,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -21,15 +22,17 @@ import com.ivanpodlesnykh.playlistmaker.R
 import com.ivanpodlesnykh.playlistmaker.databinding.FragmentCreatePlaylistBinding
 import com.ivanpodlesnykh.playlistmaker.ui.media.view_model.CreatePlaylistViewModel
 import com.ivanpodlesnykh.playlistmaker.utils.UtilFunctions
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class CreatePlaylistFragment : Fragment() {
+open class CreatePlaylistFragment : Fragment() {
 
     private var _binding: FragmentCreatePlaylistBinding? = null
-    private val binding
+    val binding
         get() = _binding!!
 
-    private val viewModel by viewModel<CreatePlaylistViewModel>()
+    open val viewModel by viewModel<CreatePlaylistViewModel>()
 
     private val pickImage = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) {
             uri ->
@@ -104,9 +107,12 @@ class CreatePlaylistFragment : Fragment() {
                 description = binding.playlistDescription.text.toString()
             )
 
-            Toast.makeText(requireContext(), "Плейлист ${binding.playlistTitle.text} создан", Toast.LENGTH_LONG).show()
+            showToast()
 
-            findNavController().navigateUp()
+            lifecycleScope.launch {
+                delay(500)
+                findNavController().navigateUp()
+            }
         }
     }
 
@@ -147,7 +153,7 @@ class CreatePlaylistFragment : Fragment() {
         )
     }
 
-    private fun navigateUpOrConfirm() {
+    open fun navigateUpOrConfirm() {
         if (viewModel.getImageIsSetLiveData().value!! or
             viewModel.getTitleIsSetLiveData().value!! or
             viewModel.getDescriptionIsSetLiveData().value!!) {
@@ -163,5 +169,9 @@ class CreatePlaylistFragment : Fragment() {
         } else {
             findNavController().navigateUp()
         }
+    }
+
+    open fun showToast() {
+        Toast.makeText(requireContext(), "Плейлист ${binding.playlistTitle.text} создан", Toast.LENGTH_LONG).show()
     }
 }

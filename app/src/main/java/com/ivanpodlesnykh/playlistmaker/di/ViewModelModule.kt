@@ -1,8 +1,11 @@
 package com.ivanpodlesnykh.playlistmaker.di
 
+import com.ivanpodlesnykh.playlistmaker.domain.media.models.Playlist
 import com.ivanpodlesnykh.playlistmaker.domain.player.models.Track
 import com.ivanpodlesnykh.playlistmaker.ui.media.view_model.CreatePlaylistViewModel
+import com.ivanpodlesnykh.playlistmaker.ui.media.view_model.EditPlaylistViewModel
 import com.ivanpodlesnykh.playlistmaker.ui.media.view_model.FavoriteTracksViewModel
+import com.ivanpodlesnykh.playlistmaker.ui.media.view_model.PlaylistViewModel
 import com.ivanpodlesnykh.playlistmaker.ui.media.view_model.PlaylistsViewModel
 import com.ivanpodlesnykh.playlistmaker.ui.player.view_model.PlayerViewModel
 import com.ivanpodlesnykh.playlistmaker.ui.search.view_model.SearchViewModel
@@ -35,4 +38,11 @@ val viewModelModule = module {
         CreatePlaylistViewModel(get())
     }
 
+    factory {(playlistId: Long) ->
+        PlaylistViewModel(playlistId, get())
+    }
+
+    factory {(playlist: Playlist) ->
+        EditPlaylistViewModel(get(), playlist)
+    }
 }

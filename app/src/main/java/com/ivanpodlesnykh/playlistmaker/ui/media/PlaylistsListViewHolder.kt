@@ -11,7 +11,7 @@ import com.ivanpodlesnykh.playlistmaker.R
 import com.ivanpodlesnykh.playlistmaker.domain.media.models.Playlist
 import com.ivanpodlesnykh.playlistmaker.utils.UtilFunctions
 
-class PlaylistsListViewHolder(private val itemView: View) : ViewHolder(itemView) {
+class PlaylistsListViewHolder(private val itemView: View, private val onClick: (playlistId: Long) -> Unit) : ViewHolder(itemView) {
 
     private val playlistCover = itemView.findViewById<ImageView>(R.id.playlistCover)
     private val playlistTitle = itemView.findViewById<TextView>(R.id.playlistTitle)
@@ -28,5 +28,9 @@ class PlaylistsListViewHolder(private val itemView: View) : ViewHolder(itemView)
         playlistTitle.text = playlist.title
 
         playlistNumberOfTracks.text = itemView.context.resources.getQuantityString(R.plurals.tracks_plurals, playlist.numberOfTracks.toInt(), playlist.numberOfTracks.toInt())
+
+        itemView.setOnClickListener {
+            onClick.invoke(playlist.id!!)
+        }
     }
 }

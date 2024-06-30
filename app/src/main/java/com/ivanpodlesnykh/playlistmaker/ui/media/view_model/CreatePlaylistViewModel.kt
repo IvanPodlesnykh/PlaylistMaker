@@ -9,11 +9,14 @@ import com.ivanpodlesnykh.playlistmaker.domain.media.models.Playlist
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CreatePlaylistViewModel(
+open class CreatePlaylistViewModel(
     private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
     private val imageUri = MutableLiveData<String>()
+
+    fun getImageUri(): LiveData<String> = imageUri
+
     fun saveImageUri(uri: String) {
         imageUri.value = uri
     }
@@ -39,7 +42,7 @@ class CreatePlaylistViewModel(
         descriptionIsSetLiveData.value = isSet
     }
 
-    fun createPlaylist(title: String, description: String) {
+    open fun createPlaylist(title: String, description: String) {
 
         viewModelScope.launch(Dispatchers.IO) {
 

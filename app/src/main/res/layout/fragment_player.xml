@@ -259,7 +259,7 @@
         android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:background="@drawable/add_track_to_playlist_bottom_sheet_background"
+        android:background="@drawable/bottom_sheet_background"
         app:behavior_hideable="true"
         style="@style/BottomSheet"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">

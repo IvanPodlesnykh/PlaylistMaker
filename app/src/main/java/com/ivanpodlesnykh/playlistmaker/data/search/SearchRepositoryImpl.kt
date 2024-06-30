@@ -40,8 +40,11 @@ class SearchRepositoryImpl(
 
                 if(response.resultCount != 0) {
                     response.results.map {
-                        if (favoriteTracksList.contains(favoriteTracksDbConverter.map(it)))
-                            it.isFavorite = true
+
+                        for (favoriteTrack in favoriteTracksList) {
+                            if (favoriteTrack.trackId == favoriteTracksDbConverter.map(it).trackId) it.isFavorite = true
+                        }
+
                     }
                     Resource.Success(response.results)
                 } else {
@@ -59,8 +62,13 @@ class SearchRepositoryImpl(
             val favoriteTracksList = database.getFavoriteTracksDao().getAllTracks()
 
             searchHistory.getTrackList().map {
-                it.isFavorite = favoriteTracksList.contains(favoriteTracksDbConverter.map(it))
+
+                for (favoriteTrack in favoriteTracksList) {
+                    if (favoriteTrack.trackId == favoriteTracksDbConverter.map(it).trackId) it.isFavorite = true
+                }
+
                 it
+
             }
         }
     }

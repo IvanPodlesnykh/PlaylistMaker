@@ -27,11 +27,19 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when(destination.id) {
+                R.id.editPlaylistFragment -> {
+                    binding.bottomNavigationView.isVisible = false
+                    binding.separator.isVisible = false
+                }
                 R.id.createPlaylistFragment -> {
                     binding.bottomNavigationView.isVisible = false
                     binding.separator.isVisible = false
                 }
                 R.id.playerFragment -> {
+                    binding.bottomNavigationView.isVisible = false
+                    binding.separator.isVisible = false
+                }
+                R.id.playlistFragment -> {
                     binding.bottomNavigationView.isVisible = false
                     binding.separator.isVisible = false
                 }

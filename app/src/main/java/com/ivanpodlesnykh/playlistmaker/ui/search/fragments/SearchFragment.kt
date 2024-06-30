@@ -72,6 +72,9 @@ class SearchFragment : Fragment() {
                 }
 
                 is SearchState.ShowHistory -> {
+                    binding.searchHistory.isVisible = true
+                    binding.listOfTracks.isVisible = false
+
                     handleErrors(ErrorType.HIDE_ERROR)
                     binding.loadingProgressBar.isVisible = false
                     showSearchHistory(it.trackList)
@@ -79,6 +82,7 @@ class SearchFragment : Fragment() {
 
                 is SearchState.ShowTrackList -> {
                     binding.listOfTracks.isVisible = true
+                    binding.searchHistory.isVisible = false
 
                     handleErrors(ErrorType.HIDE_ERROR)
                     binding.loadingProgressBar.isVisible = false
@@ -216,8 +220,6 @@ class SearchFragment : Fragment() {
         val adapter = TrackAdapter(trackList, lifecycleScope, findNavController(), R.id.action_searchFragment_to_playerFragment)
         binding.searchHistoryList.adapter = adapter
         adapter.notifyDataSetChanged()
-
-        binding.searchHistory.isVisible = true
     }
 
     private fun updateSearchHistory(trackList: List<Track>) {
